@@ -88,6 +88,13 @@ Cache](/docs/performance/cache/page-cache/#allow-selected-cookies-without-bypass
 describes `noskip_cookies`. Ignore a cookie only when different values cannot
 change private, cart, account, localized, or personalized content.
 
+If a public URL must return different content for different cookie values,
+Edge Cache can serve the first cached version regardless of the cookie. Use
+the [`A8C-Edge-Cache: no-cache` response
+header](/docs/performance/cache/edge-cache/#prevent-specific-pages-from-being-cached-at-the-edge)
+to prevent the affected pages from being cached at the edge. Configure Page
+Cache separately if it must retain distinct variants at the origin.
+
 ## Inspect response cache headers
 
 Plugins and custom code can send headers that make a response uncacheable.
@@ -98,6 +105,9 @@ Pragma: no-cache
 Cache-Control: no-cache
 Cache-Control: max-age=0
 ```
+
+These general cache headers are different from the Edge Cache-specific
+`A8C-Edge-Cache: no-cache` response header.
 
 Trace the header to the plugin, theme, or custom code that sets it. Do not
 remove a no-cache header until you know why it exists; login, account, checkout,

@@ -37,6 +37,33 @@ Serving cached responses from the edge can:
   slow or temporarily unavailable.
 - Absorb more repeat traffic without sending every request to WordPress.
 
+## Prevent specific pages from being cached at the edge
+
+Send the following response header when a specific page must not be stored in
+Edge Cache:
+
+```text
+A8C-Edge-Cache: no-cache
+```
+
+Use this header when a public URL produces different content based on a cookie
+or another value that Edge Cache does not include in its cache key. Edge Cache
+does not create arbitrary cache variants from application cookies or the
+`Vary` response header. A request header such as `Cache-Control: no-cache` is
+not a substitute for the `A8C-Edge-Cache` response header.
+
+The header bypasses only Edge Cache. [Page
+Cache](/docs/performance/cache/page-cache/) can still serve the response at the
+origin when it is configured to cache each variation safely. The header does
+not configure Page Cache or create separate cache entries for different cookie
+values.
+
+Limit the header to the affected pages so other eligible responses retain the
+performance and availability benefits of Edge Cache. After adding the header,
+purge existing edge entries for those URLs. Then verify that each page variant
+remains correct after refresh and navigation and that the final `x-ac` result
+is not an Edge Cache hit.
+
 ## Manage Edge Cache
 
 WP Cloud provides three management methods: the WP Admin interface installed
