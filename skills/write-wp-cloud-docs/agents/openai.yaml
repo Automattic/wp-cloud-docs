@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write WP Cloud Docs"
+  short_description: "Draft, edit, and review WP Cloud Markdown"
+  default_prompt: "Use $write-wp-cloud-docs to draft, edit, restructure, or review accurate WP Cloud documentation, applying the partner/client-host and downstream-customer ownership model without publishing it."
