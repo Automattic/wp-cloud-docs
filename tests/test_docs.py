@@ -60,7 +60,7 @@ class DocsToolTests(unittest.TestCase):
     def test_repository_is_valid(self) -> None:
         result = docs_tool.validate_repository(ROOT)
         self.assertEqual((), result.errors)
-        self.assertEqual(120, result.local_count)
+        self.assertEqual(125, result.local_count)
         self.assertEqual(2, result.external_count)
         self.assertNotIn("source_keys", docs_tool.CATALOG_FIELDS)
 
