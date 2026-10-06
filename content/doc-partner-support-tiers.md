@@ -1,15 +1,10 @@
-# WP Cloud partner tiers and platform options
+# WP Cloud partner support options
 
-WP Cloud offers Self-Service and Managed partnership models for host partners.
-Both include support for account, billing, documentation, and WP Cloud
-platform issues. The models differ in onboarding, day-to-day collaboration,
-implementation help, available resources, and eligibility for tailored
-platform configuration.
+WP Cloud offers Self-Service and Managed support tiers for host partners. Both tiers include support for account, billing, documentation, and WP Cloud platform issues; they differ in onboarding, day-to-day collaboration, implementation help, and access to tailored platform options.
 
-The services and platform options available to a specific partner depend on
-its partnership agreement and current account configuration.
+The services available to a specific partner depend on its partnership agreement and current account configuration.
 
-## Compare partner tiers
+## Compare support tiers
 
 | Area | Self-Service partners | Managed partners |
 | --- | --- | --- |
@@ -17,13 +12,13 @@ its partnership agreement and current account configuration.
 | Onboarding | Standard onboarding resources and documentation. | Onboarding tailored to the partner's product, configuration, and workflow. |
 | Implementation | The partner's team designs, builds, and troubleshoots its integration using WP Cloud documentation and the API reference. | The WP Cloud team may provide hands-on guidance for setup, optimization, and integrations. |
 | Communication | Support requests submitted through the WP Cloud Partner Portal. | Communication methods, check-ins, and reviews arranged with the partner team. |
-| Platform configuration | Standard platform features and configuration. Custom chroots are not available. | Approved account-level platform options and configuration based on the partnership agreement. Custom chroots are available only to Managed partners and require WP Cloud configuration. |
+| Platform configuration | Standard platform features and configuration. | Approved platform options and configuration based on the partnership agreement. |
 
 Managed services are not identical for every partner. The partner's agreement
 and account configuration determine its contacts, communication methods,
 platform options, and other services.
 
-## Understand platform configuration availability
+## Understand custom chroot availability
 
 Self-Service partners use WP Cloud's standard platform configuration. They can
 deploy their own software through SSH automation or install supported packages
@@ -37,13 +32,6 @@ automatically include a custom chroot; WP Cloud must approve and configure it
 for the client account. [Symlinks and managed
 software](/docs/wordpress/software-versions/managed-software/) explains the
 chroot, repository, deployment, and rollback model.
-
-Other account-level options have their own eligibility and configuration
-requirements. [Advanced Cron
-scheduling](/docs/wordpress/cron-scheduling/) is reserved for approved Managed
-partners. Partners can discuss different [on-demand backup
-limits](/docs/backups-restores/on-demand-backups/) with WP Cloud, but should not
-assume that every account-configured option requires a Managed partnership.
 
 ## Support available to every partner
 
@@ -97,14 +85,10 @@ A Managed partnership may add services such as:
 - communication methods arranged with the partner team; and
 - approved platform options or configuration for the partner's needs.
 
-## Discuss a Managed partnership
+Some platform options require explicit approval or account-level configuration. For example, [advanced Cron scheduling](/docs/wordpress/cron-scheduling/) is reserved for approved Managed partners, and partners can discuss higher [on-demand backup limits](/docs/backups-restores/on-demand-backups/) with the WP Cloud team.
 
-A Self-Service partner that needs a custom chroot, recurring hands-on
-onboarding, integration guidance, or other tailored platform configuration can
-ask WP Cloud about a Managed partnership. Eligibility, commercial terms,
-platform options, and included services are determined for the specific
-partnership.
+## Discuss Managed support
 
-Open the [WP Cloud Partner Portal](/docs/getting-started/partner-portal/) and
-select **Support request**. Do not send account or commercial details through
-a public documentation comment.
+A Self-Service partner that needs recurring hands-on onboarding, integration guidance, or tailored platform configuration can ask WP Cloud about a Managed partnership. Eligibility, commercial terms, and included services are determined for the specific partnership.
+
+Open the [WP Cloud Partner Portal](/docs/getting-started/partner-portal/) and select **Support request**.

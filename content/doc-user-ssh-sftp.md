@@ -141,8 +141,6 @@ ssh example-5678-alex@ssh.atomicsites.net
 
 An SFTP-only user can transfer files but cannot start an interactive shell or run a remote command. Both connection types use the filesystem locations and session limits described in [SSH and SFTP access](/docs/site-access/ssh-sftp/access-models/).
 
-All User SSH and SFTP credentials for a site share a limit of 10 concurrent connections. The limit applies to the site, not to each username. Automation must close connections promptly and prevent overlapping jobs or retries from exhausting the shared capacity. See [Session limits and intermittent connection troubleshooting](/docs/site-access/ssh-sftp/access-models/#session-limits).
-
 ## Check a new user
 
 1. List the site's users and confirm that the new username appears.

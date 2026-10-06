@@ -11,13 +11,7 @@ version, excludes shared packages from the customer's filesystem usage, and
 allows an update to be deployed consistently without storing the same files on
 every site.
 
-Custom chroots for external repositories and client-level managed deployments
-are available only to Managed WP Cloud partners. A Managed partnership does
-not automatically include a custom chroot; WP Cloud must approve and configure
-it for the client account. Self-Service partners cannot use custom chroots.
-They can deploy their own software through SSH automation or install supported
-externally hosted packages with the [Manage Site Software
-endpoint](https://wp.cloud/docs/api/#tag/sites/POST/site-manage-software/{type}/{site}).
+Custom chroots, external repositories, and client-level managed deployments are available to qualifying managed WP Cloud partners. Self-service partners can deploy their own software through SSH automation or install supported externally hosted packages with the [Manage Site Software endpoint](https://wp.cloud/docs/api/#tag/sites/POST/site-manage-software/{type}/{site}).
 
 ## Types of managed software
 

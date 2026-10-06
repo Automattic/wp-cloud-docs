@@ -26,7 +26,7 @@ When a request from Googlebot produces an HTTP `5xx` response at the origin, WP 
 
 A Googlebot request recorded as `408` can therefore represent an underlying application error. Do not assume that the crawler exceeded a request or concurrency limit based on the `408` alone.
 
-Compare the request timestamp, URL, and user agent with the site's [PHP error logs](/docs/monitoring-logs/logs/error-logs/). Look for a fatal error or other plugin, theme, or application failure at the same time. Correct the underlying error, then ask the search engine to crawl the affected URL again when appropriate.
+Compare the request timestamp, URL, and user agent with the site's [Error logs](/docs/monitoring-logs/logs/error-logs/). Look for a fatal error or other plugin, theme, or application failure at the same time. Correct the underlying error, then ask the search engine to crawl the affected URL again when appropriate.
 
 ## Use Metrics and Insights with origin logs
 

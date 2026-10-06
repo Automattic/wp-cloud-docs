@@ -1,8 +1,6 @@
 # WP Cloud logos
 
-Partners that co-market WP Cloud can download the current WP Cloud logos and
-banners from the [WP Cloud press kit](https://wp.cloud/inquiries/#download).
-The press kit is the current source for available file and layout options.
+Partners that co-market WP Cloud can download the current WP Cloud logos and banners from the [WP Cloud press kit](https://wp.cloud/inquiries/#downloadwp-cloud-press-kit). The press kit is the current source for available file and layout options.
 
 | Asset | Purpose | Example |
 | --- | --- | --- |

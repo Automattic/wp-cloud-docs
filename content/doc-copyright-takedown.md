@@ -31,9 +31,7 @@ Consult qualified legal counsel before disputing a notice. Fair use, a valid
 license, permission from the rightsholder, and public-domain status can be
 relevant, but WP Cloud does not decide those questions for the partner.
 
-If the partner cannot meet the deadline, reply to the notice immediately. When
-no action is taken within 48 hours, Automattic can act directly to maintain
-compliance and the failure can affect the partnership.
+If the partner cannot meet the deadline, reply to the notice immediately.
 
 ## Notification delivery
 

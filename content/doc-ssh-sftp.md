@@ -68,37 +68,13 @@ SSH and SFTP sessions have the following limits:
 - All processes in a session can use up to 1 GB of memory in total.
 - A session can create up to 25 processes. The shell and every command in a pipeline count toward this limit.
 - Background processes stop when the session disconnects, including processes started with `nohup`.
-- A site can have up to 10 concurrent User SSH and SFTP connections in total.
+- A site can have up to 10 concurrent site-user connections.
 
-The 10-connection limit is shared by every site-user credential for the site. Ten connections from one username consume the same capacity as one connection from each of 10 usernames. SSH and SFTP connections both count. Client SSH connections do not count toward this site-user limit.
+The 10-connection limit is shared by every site-user credential for the site. Ten connections from one username consume the same capacity as one connection from each of 10 usernames. SSH and SFTP connections both count.
 
-The limit measures connections that are open at the same time, not the number of connection attempts during an interval. A frequent job can remain within the limit when each connection closes before the next run. A slower, overlapping, or improperly closed job can exhaust the limit even when each scheduled run opens fewer than 10 connections. Creating another username does not add capacity because the limit applies to the site.
-
-When all 10 slots are in use, WP Cloud disconnects new site-user connection attempts until a connection ends. This can appear intermittent when sessions overlap only at certain times.
-
-For site-user automation:
-
-- limit the connection pool and leave capacity for other automation and interactive users;
-- close each connection after both successful and failed operations;
-- apply a timeout so a stalled transfer does not hold a connection indefinitely;
-- avoid immediate, unbounded retry loops after a connection failure; and
-- account for every job and username that connects to the same site.
-
-Client SSH sessions are intended for interactive work and bounded automation, not permanent workers or daemons.
+Client SSH connections **do not** count toward the site's 10 concurrent site-user connections. They are intended for interactive work and bounded automation, not permanent workers or daemons.
 
 Process counts can be higher than they first appear. A shell script that runs `wp command | grep something | cut -f1 | sort | uniq` uses a process for the login shell, the script, `wp`, and each command in the pipeline. Break large jobs into restartable stages instead of trying to keep one session open indefinitely.
-
-### Troubleshoot intermittent connection failures
-
-When a site user can connect at some times but new SSH or SFTP connections later fail:
-
-1. Check every person, integration, and scheduled job that uses a site-user credential for the site. The active connections might use different usernames or originate from different addresses.
-2. Confirm that each client closes the SSH transport after successful transfers, errors, and timeouts. Closing a transferred file or completing one job does not necessarily close a connection managed by a reusable client or connection pool.
-3. Check whether scheduled runs overlap, retry after failures, or open several connections for separate operations.
-4. Stop or reduce the automation long enough for active connections to close, then try one new connection.
-5. If the failure continues, record the site ID, username, source address, timestamps with time zone, client error, and recent connection pattern for WP Cloud Support.
-
-Changing a password or creating another site user does not increase the site's connection limit. Use credential rotation for an authentication problem, not as the first response to a concurrency failure.
 
 ## Check access
 

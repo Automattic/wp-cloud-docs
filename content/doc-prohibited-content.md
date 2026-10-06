@@ -48,7 +48,7 @@ purpose only when the partner and site owner have the required consent,
 security, retention, and privacy practices.
 
 WP Cloud is not offered as a HIPAA-compliant service. See
-[Compliance](/docs/partner-resources/policies-compliance/compliance/) before accepting a regulated
+[Compliance](/docs/partner-resources/policies-compliance/terms-of-service-compliance/) before accepting a regulated
 health-information workload.
 
 ## Spam and service interference

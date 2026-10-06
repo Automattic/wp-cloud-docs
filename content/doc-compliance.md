@@ -1,10 +1,10 @@
-# Compliance
+# Terms of Service & Compliance
 
-WP Cloud host partners are responsible for determining whether the platform,
-their product, and their own operational controls meet the legal and compliance
-requirements of their customers. This page summarizes the WP Cloud boundaries;
-it is not legal advice or a substitute for the governing agreement and current
-compliance reports.
+WP Cloud host partners are responsible for adhering to the WP Cloud Services Agreement, determining whether the platform, their product, and their own operational controls meet the legal and compliance requirements of their customers. This page summarizes the WP Cloud boundaries; it is not legal advice or a substitute for the governing agreement and current compliance reports.
+
+## Terms of Service
+
+Any access and use of WP Cloud is subject to the WP Cloud Terms of Service and the WP Cloud Services Agreement. This document is provided during onboarding, is accepted before service begins, and is available within the Documents section of the [Partnership Details page](https://hosts.automattic.com/wpcloud/partnership-details).
 
 ## Privacy and data protection
 
@@ -14,6 +14,10 @@ privacy treatment of Automattic services used with WP Cloud, including Jetpack
 and Akismet. Partners must also provide the privacy notices, data processing
 terms, consent mechanisms, and security controls required for their own service
 and customers.
+
+Host clients are provided a Data Processing Addendum (DPA) explaining Automattic's data protection obligations and rights as a processor, as well as the data protection obligations and rights of host clients, including but not limited to GDPR obligations.
+
+These documents are available within the Documents section of the [Partnership Details page](https://hosts.automattic.com/wpcloud/partnership-details).
 
 ## Health information
 
@@ -30,20 +34,4 @@ The exact facilities, standards, report periods, and documents can change. Host
 partners that require current SOC or ISO evidence should request the applicable
 reports through the WP Cloud team and evaluate them with their own controls.
 
-| Evidence value | What it describes | Example use |
-| --- | --- | --- |
-| SOC reports | An independent assessment of a service organization's stated controls during the report period. | A partner's vendor-risk review. |
-| ISO/IEC 27001 certification | An information-security management system certified for a defined scope. | Confirming whether the relevant facility and service fall within that scope. |
-| Data processing terms | The contractual roles and commitments for personal data. | A privacy or GDPR assessment alongside the partner's own terms. |
-
-A facility name or old certification date is not enough by itself. Use the
-current report and its scope, period, exceptions, and subservice-organization
-language when completing an assessment.
-
-Security and compliance reports may be confidential, limited to authorized
-contacts with a business need, or supplied under a nondisclosure agreement.
-Do not redistribute a report unless its terms allow it. A data-center
-operator's report covers the facility and services defined in that report; it
-is not a WP Cloud service attestation. Evaluate WP Cloud infrastructure
-controls together with the host partner's panel, software, support operations,
-contracts, and customer-facing controls.
+Security and compliance reports may be confidential, limited to authorized contacts with a business need, or supplied under a nondisclosure agreement. Do not redistribute a report unless its terms allow it.

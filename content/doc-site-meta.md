@@ -14,7 +14,7 @@ The [Site Meta endpoint](https://wp.cloud/docs/api/#tag/sites/POST/site-meta/{si
 | `burst_php_conns` | Allows automatic scaling of PHP workers beyond `default_php_conns` when capacity is available. Set it to `1` to enable bursting or `0` to disable it. | `1` (enabled) |
 | `php_memory_limit` | Sets the per-request PHP memory limit in megabytes. Accepted values are `512`, `1024`, `1536`, and `2048`. | `512` MB |
 | `space_quota` | Sets a hard filesystem quota using an integer and size suffix, such as `50G` or `200G`. The technical minimum is 1 GB, and the billable minimum is 25 GB. Quotas above 200 GB require coordination with WP Cloud. | `200G` |
-| `space_used` | Read-only compressed, charged usage for the site's writable ZFS user space, in bytes. It is refreshed approximately every 12 hours. | Reported by the platform. |
+| `space_used` | Read-only compressed, charged usage for the site's writable ZFS user space, in bytes. It is refreshed approximately every 12 hours. Does not include database storage usage. | Reported by the platform. |
 | `_data` → `site_type` | Stores the site's billing classification as versioned JSON. See [Set the site type and billing classification](#set-the-site-type-and-billing-classification). | No value; the site is billable by default. |
 
 For example, set a site to four normal PHP connections:

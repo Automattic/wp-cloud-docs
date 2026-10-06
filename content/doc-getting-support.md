@@ -1,6 +1,6 @@
 # Get support from WP Cloud
 
-WP Cloud Support works with WP Cloud host partners, also known as host clients, on onboarding, account and API access, billing, platform behavior, and confirmed platform problems. Host partners support the hosting products and client sites they manage.
+[WP Cloud Support](#send-a-support-request) works with WP Cloud host partners, also known as host clients, on onboarding, account and API access, billing, platform behavior, and confirmed platform problems. Host partners support the hosting products and client sites they manage.
 
 ## Check service status
 
@@ -67,6 +67,8 @@ Do not send exploit payloads, credentials, or sensitive reproduction data throug
 
 ## Send a support request
 
-Submit WP Cloud questions and platform issues through the [Partner Portal support form](https://hosts.automattic.com/wpcloud/support-request). Continue using another contact method only when a WP Cloud representative has arranged it with your team.
+Submit [in-scope](#support-scope) WP Cloud questions and platform issues, along with [useful evidence](#include-useful-evidence), through the [**Partner Portal support form**](https://hosts.automattic.com/wpcloud/support-request). Continue using another contact method only when a WP Cloud representative has arranged it with your team.
 
 WP Cloud monitors incoming support messages around the clock. General requests normally receive a response within 24 hours. Reports of broad platform failures and emergency API-key problems receive urgent review.
+
+[Contact Support](https://hosts.automattic.com/wpcloud/support-request)
