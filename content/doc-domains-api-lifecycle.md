@@ -6,7 +6,18 @@ Services API (DSAPI). It covers domain statuses, state transitions, and the
 flows for registration, renewal, expiration, restoration, transfer, and
 deletion.
 
-All date values in events and responses are formatted as `YYYY-MM-DD HH:MM:SS` in UTC.
+Send commands using the [WP Cloud form request format](/docs/api-automation/domain-registration-api/overview/#command-structure).
+HTTP `202` means an asynchronous command was accepted; poll for its result before
+advancing your domain state. Completed DSAPI failures use HTTP `200` with
+`data.success` set to `false` and an application code at `data.status`.
+
+The event fields described below belong to each event's `event_data` object. In
+a WP Cloud `Event\Enumerate` response, events are at `data.data.events`. For
+example, a failure's first error description, when present, is at
+`data.data.events[0].event_data.errors[0].description`.
+
+Calendar dates in events and responses use `YYYY-MM-DD HH:MM:SS` in UTC. The
+response envelope's `timestamp` is a Unix timestamp in seconds.
 
 ---
 
