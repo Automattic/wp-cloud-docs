@@ -263,9 +263,10 @@ Some failures include an `errors` array, as in this inner-envelope example:
 Handle HTTP errors before reading the DSAPI envelope. Transport validation
 returns HTTP `400` for a missing or invalid command, invalid JSON parameters,
 or a non-string correlation ID. Client authorization or an unavailable reseller
-account returns HTTP `403`. Unexpected processing or response failures return
-HTTP `500` with a generic message. These failures use WP Cloud's `message` and
-`data` wrapper without a DSAPI command result.
+account returns HTTP `403`. If DSAPI throws an unexpected exception or returns
+an unusable response, the endpoint returns HTTP `502` with a generic message.
+Failures in WP Cloud's integration setup return HTTP `500`. These failures use
+WP Cloud's `message` and `data` wrapper without a DSAPI command result.
 
 DSAPI error codes such as `504`, `600` and `999` are application codes in
 `data.status`; they are not HTTP status codes. Do not automatically retry an
