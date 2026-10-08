@@ -1,15 +1,21 @@
 # Domain Services API command reference
 
 
-The Domain Services API (DSAPI) accepts commands as JSON payloads. Each command
-follows this structure:
+WP Cloud sends commands to the Domain Services API (DSAPI) through the
+`/domain-services/<client>` endpoint. Send a form-encoded POST with `command`,
+optional `client_txn_id` and one `params` field containing a JSON object string.
+See [Request format and environment selection](/docs/api-automation/domain-registration-api/overview/#select-the-environment)
+for a complete request example.
+
+After decoding `params`, the endpoint passes this structure to DSAPI:
 
 ```json
 {
-  "command": "Domain\\Register",
+  "command": "Domain\\Renew",
   "params": {
     "domain": "example.com",
-    "contacts": { ... }
+    "current_expiration_year": 2027,
+    "period": 1
   },
   "client_txn_id": "unique-correlation-id"
 }
@@ -19,11 +25,18 @@ follows this structure:
 - `params`: An object containing the command parameters.
 - `client_txn_id`: An optional correlation ID you provide to match async events back to the originating command.
 
+Use JSON values matching the parameter types below. For example, send
+`--data-urlencode 'params={"domain":"example.com","current_expiration_year":2027,"period":1}'`
+with `--data-urlencode 'command=Domain\Renew'`. Sending `"period":"1"` preserves a
+string and does not satisfy an integer parameter. This example requests a
+renewal; only use it for a domain you intend to renew in the selected environment.
+
 All responses share a common envelope (`status`, `success`, `client_txn_id`,
 `data`, `errors`, and other fields) described in the [Domain Services API
 overview](/docs/api-automation/domain-registration-api/overview/#response-envelope). The **Response**
-sections below describe the command-specific payload under the envelope's
-`data` key.
+sections below describe the command-specific payload under the DSAPI envelope's
+`data` key. In WP Cloud's outer wrapper, this payload is at `data.data`, command
+status is at `data.status`, and errors are at `data.errors` when present.
 
 Treat authorization codes and domain contact information as sensitive. Do not
 write them to application logs or expose them to an end customer who does not
@@ -34,7 +47,13 @@ control the domain.
 Commands are either **synchronous** or **asynchronous**:
 
 - **Sync** commands return their result directly in the HTTP response.
-- **Async** commands return HTTP `202 Accepted` immediately. The actual result is delivered later as an event. Use the Event commands to poll for and acknowledge these results. The `client_txn_id` you provide in the request will appear in the corresponding event, allowing you to correlate responses.
+- **Async** commands return HTTP `202 Accepted` when accepted for processing. This
+  confirms acceptance, not completion. The actual result is delivered later as an
+  event. Use the Event commands to poll for and acknowledge these results. The
+  `client_txn_id` from the request appears in the corresponding event.
+
+Completed DSAPI failures return HTTP `200` with `data.success` set to `false`.
+Check the body as well as the HTTP status before treating a command as successful.
 
 Async commands: `Domain\Register`, `Domain\Transfer`, `Domain\Renew`, `Domain\Restore`, `Domain\Delete`.
 
