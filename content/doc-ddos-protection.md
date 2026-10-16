@@ -14,6 +14,8 @@ Most sites can absorb a large increase in traffic without any manual action. Tra
 
 [Defensive Mode](/docs/security/traffic-protection/defensive-mode/) provides an additional on-demand challenge during a suspected bot or DDoS event. It can reduce automated requests that are still reaching the site or using PHP resources.
 
+WP Cloud also serves challenges automatically for certain traffic classifications, such as spoofed crawlers, even when manual and Automatic Defensive Mode are off. Most browser challenges complete automatically, but WP Cloud can escalate to a harder challenge. The [Defensive Mode guide](/docs/security/traffic-protection/defensive-mode/) explains these triggers and how to report unexpected challenges. The platform's challenge system cannot be fully disabled.
+
 ## Avoid third-party proxying when possible
 
 Enable Edge Cache and send traffic directly to WP Cloud whenever possible. A third-party proxy can hide request information that WP Cloud uses for traffic classification and DDoS mitigation. It can also prevent visitors from connecting directly to the nearest WP Cloud edge data center.
