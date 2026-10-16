@@ -29,6 +29,8 @@ curl --fail-with-body --silent --show-error \
 
 Resource settings can change without reprovisioning the site. Before reducing `space_quota`, check the site's current filesystem use and do not set a quota below it.
 
+When all available PHP workers are busy, further PHP requests wait in a backlog. See [Understand PHP workers and backlog](/docs/troubleshooting/site-performance/#understand-php-workers-and-backlog) for a six-worker example and the wait before resource limiting.
+
 Before requesting a PHP allocation above the normal self-service range, compare PHP worker saturation or backlog, request rate, PHP CPU, burst use, and the slowest request classes over the same time window. Additional concurrency can help when otherwise-healthy requests are waiting for a worker, but it does not correct slow code or database work. See [Troubleshoot site performance](/docs/troubleshooting/site-performance/).
 
 WP Cloud applies filesystem quotas per site. If a hosting plan shares a larger storage allowance across several sites, the partner's product must track that allowance and prevent the combined site quotas from exceeding it.

@@ -18,6 +18,28 @@ A site can appear fast during normal traffic while one slow uncached request lea
 
 If visitors receive HTTP 429 responses or the logs contain 599 records, use [Troubleshoot HTTP 429 and 599 errors](/docs/troubleshooting/429-599-errors/) for the status-code-specific diagnosis. The steps below apply to slow or resource-heavy requests with or without those status codes.
 
+## Understand PHP workers and backlog
+
+PHP workers and PHP connections describe the same PHP request capacity. The `default_php_conns` setting controls the normal number of PHP requests that can run at once. Bursting can provide more workers when enabled and capacity is available. See [Configure resource values](/docs/sites/site-meta/#configure-resource-values) for the settings and supported allocation range.
+
+Each worker handles one PHP request at a time. It stays occupied while that request runs, including time spent waiting for database queries or external HTTP responses. Requests served entirely by [Edge Cache](/docs/performance/cache/edge-cache/) do not use an origin PHP worker.
+
+Adding workers increases concurrency. It does not make an individual PHP render, database query, or external call finish faster. More workers can reduce response times when requests would otherwise wait for a worker. If workers are already available, increasing their count does not shorten PHP rendering time.
+
+For example, suppose a site has six default PHP connections and no additional burst capacity is available. Six requests that require PHP rendering can run at once. If all six workers are busy, further PHP requests wait in the backlog.
+
+| Worker availability | What happens to the next PHP request |
+| --- | --- |
+| A worker is free when the request arrives. | PHP rendering starts without a backlog wait. |
+| A worker becomes free after two seconds. | The request waits two seconds, then starts rendering. If PHP takes one second, backlog wait plus rendering takes about three seconds. |
+| No worker becomes free within about 15 to 15.5 seconds. | The request is resource limited. WP Cloud records HTTP `599` internally and returns a `429` page to the visitor. |
+
+The backlog wait is time spent waiting to start PHP work. It is separate from the time PHP takes to render the response. Requests in the same traffic spike can have different outcomes: some run immediately, some wait and succeed, and some are resource limited.
+
+A recorded `599` also triggers temporary [Automatic Defensive Mode](/docs/security/traffic-protection/defensive-mode/#automatic-defensive-mode). Challenges reduce unwanted requests reaching PHP, helping protect capacity for legitimate traffic and the server pool. Challenged requests must pass the challenge before continuing.
+
+Use Metrics and request logs to decide whether the site needs more PHP capacity, optimization, or both. Too little allocated capacity and slow requests can each cause a backlog; together, they make it harder for the site to keep up.
+
 ## Define the slow request
 
 Record the affected site, URL or WordPress action, time and time zone, user state, and the behavior the customer observed. Note whether the request is consistently slow or only slows during traffic increases.
@@ -41,18 +63,22 @@ The [Insights section in the WP Cloud Partner Portal](https://hosts.automattic.c
 Use the [Time Series Metrics endpoint](https://wp.cloud/docs/api/#tag/metrics/POST/metrics/{type}/{key}[/summarize]) when you need exact values or dimensions for a dashboard or investigation. Useful measurements include:
 
 - `requests` and `response_time_average` for request volume and response time;
-- `php_cpu_time`, `php_response_time`, and `php_workers_max` for PHP work;
+- `php_cpu_time`, `php_response_time`, `php_workers_average`, and `php_workers_max` for PHP work;
 - `php_request_burst_percentage`, `php_request_limited_percentage`, and `php_request_normal_percentage` for PHP connection behavior;
 - `mysql_cpu_time`, connection, row, and command metrics for database activity; and
 - `edge_cache_hit_percentage` and `edge_cache_miss_percentage` for edge caching.
 
 Use dimensions such as `path`, `http_status`, `page_renderer`, `page_is_cached`, `wp_admin_ajax_action`, `http_user_agent`, `visitor_is_crawler`, `is_rate_limited`, and `rate_limit_reason` to narrow the measurement. Metrics served from the edge are not fully represented in origin web server logs.
 
+Compare worker use with the site's configured connections and burst behavior over the same incident window. In PHP metrics, `burst_status=LIMITED` and `php_request_limited_percentage` help identify resource-limited requests. Slow responses that succeed can still include backlog time, so the absence of `599` records does not rule out waiting for a worker.
+
 Account-wide averages can hide one slow site or path. Narrow the results by site and request dimensions before deciding that a change in the overall average explains the reported problem.
 
 ## Compare web and error logs
 
 [Web server logs](/docs/monitoring-logs/logs/web-server-logs/) identify the origin requests made during the affected period. Compare request URLs, methods, statuses, renderers, cache state, request times, user agents, and visitor addresses.
+
+When present, `php_backlog_time` records time spent waiting for PHP capacity. Compare it with the total `request_time` when investigating a slow request.
 
 Look for:
 
@@ -96,6 +122,7 @@ Make the change that addresses the performance issue you identified:
 - Optimize the underlying slow database query or PHP function before relying on Object Cache to hide its cost. Cached values can expire or be evicted, and the site must still generate the value after a cache miss.
 - Cache external API responses when the data can be reused. When the page does not require current data, retrieve it with a scheduled task instead of making the visitor wait. Set an appropriate timeout and failure behavior for requests that must run while the page loads.
 - Optimize, replace, or remove the plugin or theme code identified by APM, Query Monitor, or profiling.
+- Increase the site's [PHP connection allocation](/docs/sites/site-meta/#configure-resource-values) when measurements show legitimate PHP requests waiting for workers. Review burst availability and PHP and database use before choosing an allocation. Optimize slow work as well when it keeps workers occupied; adding concurrency does not fix that work.
 - Reduce repeated logged-out `admin-ajax.php` or `wc-ajax` requests, which load WordPress and cannot use full-page cache.
 - Fix missing static assets. The default WordPress 404 response loads PHP; [static files and lightweight 404s](/docs/performance/lightweight-404s-static-files/) can reduce that work for eligible requests.
 - Avoid proxying a WP Cloud domain when possible. A proxy can replace or obscure connection signals that WP Cloud uses to classify traffic. If a site requires another proxy, follow [Configure Cloudflare with WP Cloud](/docs/sites/domains/cloudflare/).
