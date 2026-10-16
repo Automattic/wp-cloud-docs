@@ -1,6 +1,6 @@
 # Get support from WP Cloud
 
-[WP Cloud Support](#send-a-support-request) works with WP Cloud host partners, also known as host clients, on onboarding, account and API access, billing, platform behavior, and confirmed platform problems. Host partners support the hosting products and client sites they manage.
+[WP Cloud Support](#send-a-support-request) works with WP Cloud host partners, also known as host clients, on onboarding, account and API access, billing, platform behavior, and suspected platform problems. Host partners support the hosting products and client sites they manage.
 
 ## Check service status
 
@@ -22,11 +22,13 @@ Give the support team enough information to identify the request and reproduce t
 - Attach a screenshot when it shows an important interface state or error that text does not capture.
 - Provide a non-production example site when the issue is complex and can be reproduced safely there.
 
+For a suspected platform performance problem, include URLs, timestamps and time zone, Metrics and log results, and findings from any APM traces or profiling. Explain which checks your team completed and why the observations suggest a platform fault. You do not need to prove the root cause before reporting a suspected platform fault.
+
 For a domain or network problem, check DNS propagation and include relevant `curl`, `ping`, or `traceroute` results. Remove credentials, API keys, customer data, and other secrets from every attachment and code sample.
 
 ## Support scope
 
-WP Cloud provides platform support to host partners, not direct support to their customers. Host partners are expected to have moderate to advanced technical capabilities and to identify and resolve issues with the client sites they manage. WP Cloud does not provide site-specific support.
+WP Cloud provides platform support to host partners, not direct support to their customers. Host partners are expected to have moderate to advanced technical capabilities and to identify and resolve issues with the client sites they manage. A suspected platform fault remains in scope even if it affects only one site.
 
 ### What WP Cloud Support covers
 
@@ -38,8 +40,9 @@ WP Cloud Support can help with:
 - platform operations and behavior that differs from the public documentation;
 - WP Cloud API, infrastructure, or managed-software defects;
 - platform incidents affecting partner sites;
-- policy, compliance, and documentation questions, including gaps or unclear instructions; and
-- high-level WordPress questions when they help distinguish a platform problem from a site-specific problem;
+- policy, compliance, and documentation questions, including gaps or unclear instructions;
+- feedback about existing WP Cloud performance and optimization features, and suggestions for new platform capabilities;
+- high-level WordPress questions when they help distinguish a platform problem from a site-specific problem; and
 - sales and marketing questions related to the WP Cloud partnership.
 
 Some account and site operations require identity or access verification. WP Cloud shares information only with authorized partner contacts and does not disclose information about another partner or its sites.
@@ -50,7 +53,8 @@ Host partners support the hosting products they provide to customers. This inclu
 
 Examples outside the scope of WP Cloud Support include:
 
-- site code, database, and performance issues & optimizations;
+- site-specific performance investigations, including capturing and analyzing APM traces, PHP profiling, and reviewing site code and database queries;
+- site code and database debugging, tuning, and performance optimization;
 - customer domain and Domain Name System (DNS) problems unrelated to WP Cloud;
 - general WordPress use, site design, and development;
 - plugin and theme conflicts unrelated to WP Cloud-managed software or platform configuration;
@@ -59,7 +63,7 @@ Examples outside the scope of WP Cloud Support include:
 - partner dashboards, custom integrations, and automation; and
 - customer communication, billing, and account support.
 
-WP Cloud may help guide a host partner to use platform tools, documentation, logs, or Metrics to determine whether a problem involves the platform. Host partners remain responsible for maintaining, debugging, and optimizing their sites and custom code.
+WP Cloud may help guide a host partner to use platform tools, documentation, logs, or Metrics to determine whether a problem involves the platform. Providing these tools does not include performing site-specific APM investigations or optimization for partners. Your team runs the investigation, implements site-specific changes, and remains responsible for maintaining, debugging, and optimizing its sites and custom code.
 
 ## Report a security vulnerability
 
