@@ -2,7 +2,7 @@
 
 **Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`. Partners without access can contact [WP Cloud Support](/docs/getting-started/get-support/) to express interest in exploring or testing it.
 
-Conditions select the requests an [Edge Rule](/docs/security/traffic-protection/edge-rules/) acts on. Retrieve the [Edge Rule catalog](https://wp.cloud/docs/api/#tag/edge-rules/GET/edge-rule-catalog) and use `data.matchers` for the current fields, operators, limits, and placeholder vocabulary.
+Conditions select the requests an [Edge Rule](/docs/edge/edge-rules/overview/) acts on. Retrieve the [Edge Rule catalog](https://wp.cloud/docs/api/#tag/edge-rules/GET/edge-rule-catalog) and use `data.matchers` for the current fields, operators, limits, and placeholder vocabulary.
 
 ## Write a condition
 
@@ -93,7 +93,7 @@ Use the catalog's current `matchers.limits` when building input validation. The 
 
 ## Request-header placeholders
 
-A [request-header rule](/docs/security/traffic-protection/edge-rule-types/#request-header) can use a literal value or exactly one placeholder as its entire value. Keyed fields use `{{field:name}}`:
+A [request-header rule](/docs/edge/edge-rules/types/#request-header) can use a literal value or exactly one placeholder as its entire value. Keyed fields use `{{field:name}}`:
 
 ```json
 {"value":"{{geo.country}}"}

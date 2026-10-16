@@ -85,7 +85,7 @@ A high configured `space_quota` can prevent a clone even when the source current
 
 ### Review Edge Rules (closed beta)
 
-For accounts in the Edge Rules closed beta, inspect the destination's copied rules before sending traffic to it. The [Edge Rules cloning options](/docs/security/traffic-protection/edge-rules/#cloning-and-domain-changes) control copying, primary-domain retargeting, and disabling copied rules for review.
+For accounts in the Edge Rules closed beta, inspect the destination's copied rules before sending traffic to it. The [Edge Rules cloning options](/docs/edge/edge-rules/overview/#cloning-and-domain-changes) control copying, primary-domain retargeting, and disabling copied rules for review.
 
 ### Optionally skip the automatic URL rewrite
 

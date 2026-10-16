@@ -2,9 +2,9 @@
 
 **Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`. Partners without access can contact [WP Cloud Support](/docs/getting-started/get-support/) to express interest in exploring or testing it.
 
-Each [Edge Rule](/docs/security/traffic-protection/edge-rules/) uses a catalog type identified by `rule_key`. Retrieve the [Edge Rule catalog](https://wp.cloud/docs/api/#tag/edge-rules/GET/edge-rule-catalog) for the types available to your API key. Its `input_schema`, defaults, and `constraints` are the current input contract.
+Each [Edge Rule](/docs/edge/edge-rules/overview/) uses a catalog type identified by `rule_key`. Retrieve the [Edge Rule catalog](https://wp.cloud/docs/api/#tag/edge-rules/GET/edge-rule-catalog) for the types available to your API key. Its `input_schema`, defaults, and `constraints` are the current input contract.
 
-The examples below are rule bodies, not complete HTTP requests. Send them as form fields, with `rule_definition` encoded as a JSON string. Follow the [create-and-verify procedure](/docs/security/traffic-protection/edge-rules/#create-and-verify-a-first-rule), validate before saving, and check the effect on legitimate traffic.
+The examples below are rule bodies, not complete HTTP requests. Send them as form fields, with `rule_definition` encoded as a JSON string. Follow the [create-and-verify procedure](/docs/edge/edge-rules/overview/#create-and-verify-a-first-rule), validate before saving, and check the effect on legitimate traffic.
 
 | Type | `rule_key` | Phase | Catalog risk |
 | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ The examples below are rule bodies, not complete HTTP requests. Send them as for
 | Response header | `managed.response_header` | Response headers | Low |
 | Cache bypass | `managed.cache_bypass` | Cache | Medium |
 
-Catalog entries also provide supported `scopes`, a `verification` method, and any `verification_note`. Use the [conditions reference](/docs/security/traffic-protection/edge-rule-conditions/) for shared matching fields and operators.
+Catalog entries also provide supported `scopes`, a `verification` method, and any `verification_note`. Use the [conditions reference](/docs/edge/edge-rules/conditions/) for shared matching fields and operators.
 
 ## Security fence
 
@@ -117,7 +117,7 @@ Request-header rules set or remove headers on requests sent to the origin. Their
 
 Set `operation` to `set` or `remove`. For `set`, supply one `header` name and a `value`. For `remove`, supply a header name or an array of up to 32 names. The edge does not permit setting restricted destination headers such as `Host`, `Authorization`, or `Cookie`.
 
-A set value can be a literal or one whole-value [placeholder](/docs/security/traffic-protection/edge-rule-conditions/#request-header-placeholders). For example, `{{geo.country}}` uses the visitor's country and `{{http.header:x-request-id}}` copies a named request header. Use the catalog's `matchers.placeholders` list. Placeholders cannot be concatenated with text.
+A set value can be a literal or one whole-value [placeholder](/docs/edge/edge-rules/conditions/#request-header-placeholders). For example, `{{geo.country}}` uses the visitor's country and `{{http.header:x-request-id}}` copies a named request header. Use the catalog's `matchers.placeholders` list. Placeholders cannot be concatenated with text.
 
 This example passes the visitor's country to the origin for one host:
 
@@ -186,4 +186,4 @@ This example bypasses Edge Cache for account-area paths:
 }
 ```
 
-Other catalog types may have no inputs or require separate enablement. Follow the returned schema for each entry. Use [Verify Edge Rules](/docs/security/traffic-protection/verify-edge-rules/) for response, origin, and traffic checks.
+Other catalog types may have no inputs or require separate enablement. Follow the returned schema for each entry. Use [Verify Edge Rules](/docs/edge/edge-rules/verify/) for response, origin, and traffic checks.

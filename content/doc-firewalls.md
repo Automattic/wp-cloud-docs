@@ -91,4 +91,4 @@ layer returned the response.
 
 ## Edge Rules (closed beta)
 
-Enabled WP Cloud partner accounts can use [Edge Rules](/docs/security/traffic-protection/edge-rules/) to match HTTP requests at site or domain scope and apply blocks, challenges, redirects, or other catalog actions. Edge Rules is currently in closed beta. Validate the rule definition, wait for reconciliation, and verify matching and legitimate requests after changes.
+Enabled WP Cloud partner accounts can use [Edge Rules](/docs/edge/edge-rules/overview/) to match HTTP requests at site or domain scope and apply blocks, challenges, redirects, or other catalog actions. Edge Rules is currently in closed beta. Validate the rule definition, wait for reconciliation, and verify matching and legitimate requests after changes.
