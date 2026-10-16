@@ -6,6 +6,12 @@ Each query covers one domain. It defaults to the site's primary domain. To query
 
 Edge Logs retain the past 24 hours. Each request requires `start` and `end` within that period and can cover at most one hour. The start is inclusive and the end is exclusive. A response contains at most 5,000 records, with no pagination, cursor, or offset. `data.result_count` is the returned count, not the total matching count. A response at the cap may omit matching records. Shorter windows and filters reduce the matches but do not guarantee a complete export. For adjacent windows, reuse the previous end as the next start.
 
+## Use Metrics for trends and dashboards
+
+Use [Metrics](/docs/monitoring-logs/metrics/) for aggregated request statistics and performance trends, including analysis beyond the 24-hour Edge Logs window. Metrics includes traffic served at the edge and requests forwarded to origin. Use it for reporting, dashboards, and integrations that ingest request counts, response times, bandwidth, and cache hit or miss rates.
+
+Dimensions such as `edge_cache_status`, `page_renderer`, and `page_is_cached` help you examine cache behavior and origin handling. Metrics summarizes requests into time buckets. It does not provide the individual request records returned by Edge Logs. Available time resolution depends on the age and range of the data.
+
 ## Filter Edge requests
 
 Use these filters with the Edge Logs endpoint:
