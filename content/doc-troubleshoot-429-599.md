@@ -94,8 +94,8 @@ of PHP-generated 404 responses falls.
 
 A 599 points to exhausted PHP connections or other resource limits, not one
 specific plugin or request. When all available PHP workers are busy, additional
-PHP requests wait in a backlog. If no worker becomes available within about
-15 to 15.5 seconds, WP Cloud records a 599 and returns a 429 page to the visitor.
+PHP requests wait in a backlog. If no worker becomes available within
+15 seconds, WP Cloud records a 599 and returns a 429 page to the visitor.
 
 Some requests leave the backlog after one, two, or three seconds and complete
 successfully. Their response times include that wait, so a busy site can have

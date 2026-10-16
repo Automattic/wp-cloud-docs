@@ -32,7 +32,7 @@ For example, suppose a site has six default PHP connections and no additional bu
 | --- | --- |
 | A worker is free when the request arrives. | PHP rendering starts without a backlog wait. |
 | A worker becomes free after two seconds. | The request waits two seconds, then starts rendering. If PHP takes one second, backlog wait plus rendering takes about three seconds. |
-| No worker becomes free within about 15 to 15.5 seconds. | The request is resource limited. WP Cloud records HTTP `599` internally and returns a `429` page to the visitor. |
+| No worker becomes free in 15 seconds. | The request is resource limited. WP Cloud records HTTP `599` internally and returns a `429` page to the visitor. |
 
 The backlog wait is time spent waiting to start PHP work. It is separate from the time PHP takes to render the response. Requests in the same traffic spike can have different outcomes: some run immediately, some wait and succeed, and some are resource limited.
 
