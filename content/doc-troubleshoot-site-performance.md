@@ -70,7 +70,9 @@ Use the [Time Series Metrics endpoint](https://wp.cloud/docs/api/#tag/metrics/PO
 
 Use dimensions such as `path`, `http_status`, `page_renderer`, `page_is_cached`, `wp_admin_ajax_action`, `http_user_agent`, `visitor_is_crawler`, `is_rate_limited`, and `rate_limit_reason` to narrow the measurement. Metrics served from the edge are not fully represented in origin web server logs.
 
-Compare worker use with the site's configured connections and burst behavior over the same incident window. In PHP metrics, `burst_status=LIMITED` and `php_request_limited_percentage` help identify resource-limited requests. Slow responses that succeed can still include backlog time, so the absence of `599` records does not rule out waiting for a worker.
+Compare `php_workers_max` with the site's configured connections and available burst capacity over the same incident window. Regularly reaching the allocation indicates busy PHP capacity. If additional burst capacity cannot meet demand, the risk of backlog delays and `599` responses increases.
+
+The PHP `burst_status` value `LIMITED` and `php_request_limited_percentage` describe a capacity classification, not necessarily a failed request. A request can wait in the backlog and still succeed. Check recorded HTTP statuses to confirm actual `599` failures. Slow successful responses can still include backlog time, so the absence of `599` records does not rule out waiting for a worker.
 
 Account-wide averages can hide one slow site or path. Narrow the results by site and request dimensions before deciding that a change in the overall average explains the reported problem.
 
