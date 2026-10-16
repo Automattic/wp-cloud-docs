@@ -93,9 +93,16 @@ of PHP-generated 404 responses falls.
 ## Investigate a recorded 599
 
 A 599 points to exhausted PHP connections or other resource limits, not one
-specific plugin or request. If a connection does not become available within
-the platform's waiting period, WP Cloud records a 599 and returns a 429 page to
-the visitor.
+specific plugin or request. When all available PHP workers are busy, additional
+PHP requests wait in a backlog. If no worker becomes available within about
+15 to 15.5 seconds, WP Cloud records a 599 and returns a 429 page to the visitor.
+
+Some requests leave the backlog after one, two, or three seconds and complete
+successfully. Their response times include that wait, so a busy site can have
+both slow successful requests and resource-limited requests. See [Understand
+PHP workers and backlog](/docs/troubleshooting/site-performance/#understand-php-workers-and-backlog)
+for a six-worker example and the distinction between concurrency and rendering
+speed.
 
 An internally recorded 599 triggers temporary [Automatic Defensive Mode](/docs/security/traffic-protection/defensive-mode/#automatic-defensive-mode) to protect the site's resources. Requests that receive a browser challenge must pass it before continuing. Traffic classifications can also trigger challenges without a 599 or an active Defensive Mode setting. For unexpected challenges affecting real users or essential services, [report the request details to WP Cloud Support](/docs/security/traffic-protection/defensive-mode/#report-unexpected-challenges).
 
@@ -128,10 +135,21 @@ For 599s, review `php_cpu_time`, `php_workers_average`, `php_workers_max`,
 response time for the same period. These measurements help distinguish a short
 traffic spike from PHP work that remains slow throughout the incident.
 
+Use `burst_status=LIMITED` in PHP metrics to inspect resource-limited requests.
+Compare worker use with the site's configured connections and available burst
+capacity. A worker can stay occupied while waiting for a database query or
+external response, so worker exhaustion does not require CPU use to reach its
+limit.
+
 ## Reduce resource use and request load
 
+A site may need more PHP capacity, faster or less frequent PHP work, or both.
 Choose changes that address what the logs and metrics show:
 
+- Increase the site's [PHP connection allocation](/docs/sites/site-meta/#configure-resource-values)
+  when legitimate requests are waiting for workers and the measurements support
+  more concurrency. Review available burst capacity and PHP and database use.
+  Additional workers reduce queueing; they do not make one PHP render faster.
 - Increase the share of eligible traffic served by Page Cache and Edge Cache.
   If eligible public responses continue to miss or bypass either layer, use
   [Troubleshoot Page and Edge
