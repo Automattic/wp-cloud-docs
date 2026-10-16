@@ -88,6 +88,8 @@ Use the [Get Defensive Mode status endpoint](https://wp.cloud/docs/api/#tag/edge
 
 WP Cloud temporarily enables Automatic Defensive Mode after a resource-limit event recorded internally as HTTP `599`. A 599 means a PHP connection was not available in time. It does not require CPU usage to reach its limit.
 
+See [Understand PHP workers and backlog](/docs/troubleshooting/site-performance/#understand-php-workers-and-backlog) for a six-worker example and guidance on adding capacity or optimizing the site.
+
 Automatic Defensive Mode reduces unwanted requests reaching WordPress to protect the site's resources. This can help legitimate requests reach the site instead of being resource limited. Requests that receive a challenge must still pass it before continuing.
 
 WP Cloud may enable Automatic Defensive Mode again or extend it if conditions do not improve. A legitimate visitor is challenged no more than once per hour while Automatic Defensive Mode is active.

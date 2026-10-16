@@ -65,6 +65,8 @@ ordinary request-rate limit. [Troubleshoot HTTP 429 and 599
 errors](/docs/troubleshooting/429-599-errors/) explains how to distinguish the
 recorded statuses using logs and current metrics.
 
+See [Understand PHP workers and backlog](/docs/troubleshooting/site-performance/#understand-php-workers-and-backlog) for a six-worker example and guidance on adding capacity or optimizing the site.
+
 A group of true HTTP 429 responses can also accompany a DDoS attack or repeated
 requests for missing pages and assets. See [DDoS
 protection](/docs/security/traffic-protection/ddos-protection/) for the platform
