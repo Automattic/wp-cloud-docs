@@ -18,9 +18,21 @@ Most challenges are automated browser checks that use proof of work. A visitor b
 
 A legitimate visitor whose request matches a suspicious pattern can continue after passing the challenge. API clients, webhooks, uptime monitors, and other automated clients may be unable to complete a browser challenge.
 
-WP Cloud allows certain recognized legitimate traffic patterns through Defensive Mode to help keep essential ecommerce operations working. If real users or an essential service receive an unexpected challenge, follow [Report unexpected challenges](#report-unexpected-challenges).
+Challenge responses use HTTP `403`. A request that fails or cannot complete the challenge does not reach the requested page. HTTP `429` indicates [rate limiting](/docs/security/traffic-protection/rate-limiting/). It is a different response from a challenge.
+
+Many traffic patterns and fingerprints can trigger a classification challenge. A challenge can occur even when neither manual nor Automatic Defensive Mode is active.
+
+WP Cloud allows certain recognized legitimate traffic through Defensive Mode to help keep essential ecommerce operations working. If real users or an essential service receives an unexpected challenge, follow [Report unexpected challenges](#report-unexpected-challenges).
 
 The platform's challenge system cannot be fully disabled. Ending Defensive Mode does not stop challenges triggered by traffic classification. WP Cloud Support can review false positives and assess whether an exception or another adjustment is appropriate.
+
+## Test with an accurate User-Agent
+
+Use a specific, accurate `User-Agent` for your own uptime monitor, scheduled content sync, API integration, or other automated service. This applies whether requests come from a server or your computer. Never impersonate another service by copying its `User-Agent`.
+
+For example, a `curl` request with Googlebot's `User-Agent` from outside Google's network is spoofed crawler traffic. Expect a challenge and HTTP `403`. This test does not show how WP Cloud handles real Googlebot requests. Impersonating other well-known service providers can also trigger spoofed-traffic challenges.
+
+An accurate `User-Agent` helps distinguish legitimate automation from abuse, but does not bypass challenges or rate limits. If your service still receives unexpected challenges, provide the request details below to Support.
 
 ## When to use Defensive Mode
 
@@ -90,13 +102,15 @@ If legitimate traffic still receives HTTP 429 responses, or WP Cloud records HTT
 
 ## Report unexpected challenges
 
-Contact [WP Cloud Support](/docs/getting-started/get-support/) if real users or essential services, such as payment-provider callbacks, receive a challenge that they should not encounter. Include:
+Contact [WP Cloud Support](/docs/getting-started/get-support/) if real users or essential services, such as payment-provider callbacks, receive a challenge that they should not encounter. Provide the following details together for each example request:
 
 - The correct Atomic Site ID and affected domain.
-- Exact timestamps with the time zone, preferably UTC.
-- Example request URLs.
-- The complete `User-Agent` header for the affected requests.
-- Source IP addresses for the affected requests. These are essential for finding the exact requests.
+- The exact timestamp with the time zone, preferably UTC.
+- The request URL.
+- The complete `User-Agent` header.
+- The source IP address. This is essential for finding the exact request.
 - What failed and how it affected the visitor or service. Include any third-party proxy or headless setup involved in the request.
 
-These details help Support trace the challenge reason and assess possible adjustments.
+Request counts or reports that many sites are affected do not identify which requests failed for legitimate users. Logs also contain expected blocks, challenges, and rate limits.
+
+The timestamp, source IP, URL, and `User-Agent` together let Support locate the exact request, investigate why it was challenged, and assess possible adjustments. Without these details, identifying a false positive takes longer and may not be possible.

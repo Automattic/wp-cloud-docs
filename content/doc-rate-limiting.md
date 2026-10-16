@@ -34,7 +34,18 @@ signals that distinguish them from abuse and have a higher chance of matching
 a rate limit. A `User-Agent` does not bypass rate limiting or prove the
 request's identity.
 
+For your own uptime monitor, scheduled content sync, or other automated service,
+use a custom `User-Agent` that identifies your tool. This applies to requests
+from servers and your computer. Never copy Googlebot's or another service's
+`User-Agent` to make your requests appear to come from that provider. Spoofed
+traffic can receive a challenge and HTTP `403`. See [Test with an accurate
+User-Agent](/docs/security/traffic-protection/defensive-mode/#test-with-an-accurate-user-agent).
+
 ## HTTP 429 responses
+
+Browser challenges use HTTP `403`, while rate limiting uses HTTP `429`.
+Traffic signals can overlap, but the responses mean different things. A
+`403` alone does not establish that a request was rate limited.
 
 A true HTTP 429 is shown to the client and recorded as `429` in web server logs
 and [Metrics](/docs/monitoring-logs/metrics/). WP Cloud hosts can
@@ -93,3 +104,9 @@ time range as the incident. Useful dimensions include `is_rate_limited` and
 `http_user_agent`, `http_status`, or `wp_admin_ajax_action` to find the affected
 traffic. Logs show the individual requests; Metrics show the pattern over
 time. Use both when the impact is not clear.
+
+If legitimate requests remain blocked, send Support [the details for each
+example request](/docs/security/traffic-protection/defensive-mode/#report-unexpected-challenges).
+Include the exact timestamp, source IP, URL, and complete `User-Agent`.
+These details help distinguish the affected requests from expected rate limits
+and other blocked traffic.
