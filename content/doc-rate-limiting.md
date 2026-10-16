@@ -34,12 +34,16 @@ signals that distinguish them from abuse and have a higher chance of matching
 a rate limit. A `User-Agent` does not bypass rate limiting or prove the
 request's identity.
 
-For your own uptime monitor, scheduled content sync, or other automated service,
-use a custom `User-Agent` that identifies your tool. This applies to requests
-from servers and your computer. Never copy Googlebot's or another service's
-`User-Agent` to make your requests appear to come from that provider. Spoofed
-traffic can receive a challenge and HTTP `403`. See [Test with an accurate
-User-Agent](/docs/security/traffic-protection/defensive-mode/#test-with-an-accurate-user-agent).
+For every service you build, including uptime monitors, scheduled content syncs,
+webhooks, and API integrations, set a custom `User-Agent` that identifies your
+service. This applies to requests from servers and your computer. Replace
+library defaults, such as Python or Go HTTP library User-Agents, with your
+service's own identifier. For example, a monitor could send `ExampleMonitor/1.0`, and a sync service could send `ExampleContentSync/2.0`. Use your own service name and version.
+
+Do not impersonate a browser, Googlebot, or another service by copying its
+`User-Agent`. Spoofed traffic can receive a challenge and HTTP `403`. A custom
+User-Agent does not bypass challenges or rate limits. See [Test with an
+accurate User-Agent](/docs/security/traffic-protection/defensive-mode/#test-with-an-accurate-user-agent).
 
 ## HTTP 429 responses
 
@@ -93,10 +97,15 @@ samples for the incident review.
 
 ## Review rate limiting in logs and Metrics
 
-Use the [Web Server Logs API
-endpoint](https://wp.cloud/docs/api/#tag/logs/POST/site-logs/{site}) to retrieve
-request-level details such as URLs, user agents, source addresses, and HTTP
-statuses. Use the [Time Series Metrics
+Use [Web server logs](/docs/monitoring-logs/logs/web-server-logs/) for requests
+that reach the origin. Use [Edge request logs](/docs/monitoring-logs/logs/edge-request-logs/)
+for requests handled at the edge, including cached responses, rate limits, and
+challenges that may never reach the origin. Both guides link to the API
+endpoints and explain their filters and query limits. Compare request URLs,
+User-Agents, source IP addresses, timestamps, and response details for the same
+incident window.
+
+Use the [Time Series Metrics
 endpoint](https://wp.cloud/docs/api/#tag/metrics/POST/metrics/{type}/{key}) or
 the [WP Cloud host portal](https://hosts.automattic.com/wpcloud) for the same
 time range as the incident. Useful dimensions include `is_rate_limited` and
