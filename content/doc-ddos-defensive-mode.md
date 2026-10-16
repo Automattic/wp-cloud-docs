@@ -58,7 +58,7 @@ Use the [Get Defensive Mode status endpoint](https://wp.cloud/docs/api/#tag/edge
 
 WP Cloud may enable Defensive Mode automatically when a site uses too many resources. This reduces unwanted requests reaching WordPress and can help legitimate traffic continue to reach the site instead of receiving rate-limit responses.
 
-Automatic Defensive Mode runs for 60 seconds at a time. WP Cloud may enable it again or extend it if conditions do not improve. A legitimate visitor is challenged no more than once per hour while automatic Defensive Mode is active.
+Automatic Defensive Mode runs for a period of time after an HTTP 599 was internally logged. WP Cloud may enable it again or extend it if conditions do not improve. A legitimate visitor is challenged no more than once per hour while automatic Defensive Mode is active.
 
 ## Check the site after enabling Defensive Mode
 

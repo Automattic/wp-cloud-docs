@@ -46,7 +46,7 @@ All requests authenticate with the `Auth` header:
 
 ## Configure webhooks for production
 
-Webhooks let your integration respond when an asynchronous WP Cloud operation finishes or a site changes. Configure an HTTPS receiver before moving an integration to production, and allow it to accept event names and data fields it does not yet recognize.
+Webhooks let your integration respond when an asynchronous WP Cloud operation finishes or a site changes. Configure an HTTPS receiver before creating the test site below, and allow it to accept event names and data fields it does not yet recognize. Keep a receiver configured for your production integration as well.
 
 Set the receiver URL with the [Add Client Metadata endpoint](https://wp.cloud/docs/api/#tag/client-meta/POST/client-meta/{client}/{key}/add):
 
@@ -107,10 +107,9 @@ Example response:
 }
 ```
 
-The response confirms that WP Cloud accepted the request. It does not mean provisioning has finished. Save the returned identifiers for later requests:
+The response confirms that WP Cloud accepted the request. It does not mean provisioning has finished. Save the returned site ID to match the provisioning webhook and use in later requests:
 
 ```bash
-export WP_CLOUD_JOB_ID='1234'
 export WP_CLOUD_SITE_ID='5678'
 ```
 
@@ -128,39 +127,46 @@ The example uses only the fields needed for a working test site. The endpoint al
 - `wordpress-version` selects the `latest`, `previous`, or `beta` managed WordPress track for a fresh site.
 - `space_quota` sets the storage quota with a value such as `50G`. The current default is `200G`.
 - `software[...]` installs, activates, deactivates, locks, unlocks, or removes plugins and themes. Keys use paths such as `plugins/akismet/latest` and `themes/twentytwentyfive/latest`.
-- `clone_from` creates the site from another WP Cloud site ID or domain.
+- `clone_from` creates the site from another WP Cloud site ID or domain. Set destination Persistent Data in the same request with `persist_data`, for example `persist_data[HOST_PLAN]=business`. If you omit it, the destination's Persistent Data is `null`; the source values are not copied. See [Clone a site](/docs/sites/cloning/) for a complete request.
 - `restore_from` accepts one filesystem backup ID and one database backup ID. Do not combine it with `clone_from`.
 - `firewall_profile`, `geo_affinity`, `persist_data`, and `meta[...]` set supported platform and site options during provisioning.
 
 The API reference lists the accepted combinations, current enums, and fields that cannot be used during a clone or restore.
 
-## Check the provisioning job
+<a id="check-the-provisioning-job"></a>
 
-Use the returned job ID with the [Get Job Statuses endpoint](https://wp.cloud/docs/api/#tag/jobs/GET/job-status/{id}):
+## Check provisioning completion
+
+### Fresh sites: wait for the provisioning webhook
+
+For a fresh site created without `clone_from`, use the `site_provisioned` webhook as the provisioning-completion signal. Configure your receiver [before creating the site](#configure-webhooks-for-production), and match the event's `atomic_site_id` to the ID returned by Create Site. Wait for that event before starting site-scoped setup.
+
+Update your integration's provisioning state when the matching event arrives, then retrieve the site record and verify its configuration. See [Webhooks](/docs/api-automation/webhooks/) for receiver configuration, payloads, and signature validation.
+
+### Check clone completion with a response ticket
+
+When Create Site uses `clone_from`, save the returned `response_ticket_id` and destination site ID. Use the response ticket instead of `job_id` to determine whether the clone has finished.
+
+Poll the [Get Response Ticket Summary endpoint](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/get/summary) using the returned ticket ID:
 
 ```bash
+export WP_CLOUD_RESPONSE_TICKET_ID='<response-ticket-id>'
+
 curl --fail-with-body --silent --show-error \
+  --request POST \
   --header "Auth: ${WP_CLOUD_API_KEY}" \
-  "https://atomic-api.wordpress.com/api/v1.0/job-status/${WP_CLOUD_JOB_ID}"
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data-urlencode "response-ticket-id=${WP_CLOUD_RESPONSE_TICKET_ID}" \
+  "https://atomic-api.wordpress.com/api/v1.0/response-ticket/get/summary"
 ```
 
-Example response after provisioning succeeds:
+Read `data.status`: `null` means queued or running, `success` means the clone has completed, and `failure` means it failed. HTTP 202 means the ticket has not received a response yet; wait one second before querying again. Wait for `success` before making site-scoped changes. If the clone fails, retain the destination site ID and ticket ID for investigation.
 
-```json
-{
-  "message": "OK",
-  "data": {
-    "_status": "success",
-    "id": "1234"
-  }
-}
-```
-
-Wait while `_status` is `queued` or running. Continue only after it reports `success`. If it reports `failure`, retain the job ID and complete response while investigating the failure.
+Use summary mode for normal polling. The [Get Response Ticket Details endpoint](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/get/full) includes progress messages for diagnosing a slow or failed clone. The [cloning guide](/docs/sites/cloning/#monitor-clone-completion) explains the completion checks and follow-up steps.
 
 ## Retrieve the site
 
-After the job succeeds, request the site record from the [Get Site Details endpoint](https://wp.cloud/docs/api/#tag/sites/GET/get-site/{site}[/extra]):
+After the matching `site_provisioned` webhook arrives for a fresh site, or the response ticket reports `success` for a clone, request the site record from the [Get Site Details endpoint](https://wp.cloud/docs/api/#tag/sites/GET/get-site/{site}[/extra]):
 
 ```bash
 curl --fail-with-body --silent --show-error \
@@ -779,9 +785,8 @@ A successful request confirms that the API received the key from an allowed IP a
 
 The initial site workflow is complete when:
 
-- the create request returns a site ID and job ID;
-- the job reaches `success`;
-- the webhook receiver records the matching `site_provisioned` event, when webhooks are configured;
+- the create request returns the destination site ID and, for a clone, a `response_ticket_id`;
+- the receiver records the matching `site_provisioned` webhook for a fresh site, or the response ticket reports `success` for a clone;
 - the site lookup returns the expected site ID and domain;
 - the site responds after DNS and certificate provisioning finish; and
 - your inventory records the site ID, site type, resource settings, and any customer-facing domain.

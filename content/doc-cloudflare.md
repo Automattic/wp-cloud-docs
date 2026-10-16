@@ -1,10 +1,12 @@
 # Cloudflare and WP Cloud
 
-WP Cloud host partners should advise their end users to avoid proxying WP Cloud
-site traffic through Cloudflare unless a required Cloudflare feature depends
-on the proxy. Like Cloudflare, WP Cloud operates an Anycast network. WP Cloud
-receives inbound traffic and routes requests through regional edge load
-balancers and services, protecting the origin server and its IP address.
+WP Cloud sites are compatible with Cloudflare and, if properly configured, can leverage Cloudflare's cache and traffic protections.
+
+However, in the majority of cases, WP Cloud host partners should advise their end users to **avoid** proxying WP Cloud site traffic through Cloudflare unless a required Cloudflare feature depends on the proxy.
+
+We've found that most sites leveraging Cloudflare are not properly caching and are not properly configured to mitigate bad traffic. This means a site may end up being slower, consuming more resources, and allowing unwanted traffic through.
+
+Like Cloudflare, WP Cloud operates an Anycast network. WP Cloud receives inbound traffic and routes requests through regional edge load balancers and services, protecting the origin server and its IP address.
 
 WP Cloud applies traffic classification, rate limiting, and distributed
 denial-of-service (DDoS) mitigation at its edge and load balancers. [Edge

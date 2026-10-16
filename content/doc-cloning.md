@@ -4,7 +4,7 @@ Clone a WP Cloud site by passing its site ID or domain in the Create Site operat
 
 ## Create the clone
 
-Send a `POST` request to the [Create Site endpoint](https://wp.cloud/docs/api/#tag/sites/POST/create-site/{client}). This example uses a site ID for the source:
+Send a `POST` request to the [Create Site endpoint](https://wp.cloud/docs/api/#tag/sites/POST/create-site/{client}). This example uses a site ID for the source and sets the destination's `HOST_PLAN` Persistent Data value:
 
 ```bash
 curl --fail-with-body --silent --show-error \
@@ -16,10 +16,11 @@ curl --fail-with-body --silent --show-error \
   --data-urlencode "admin_email=${WP_CLOUD_ADMIN_EMAIL}" \
   --data-urlencode 'software[themes/twentytwentyfive/latest]=activate' \
   --data-urlencode "clone_from=${SOURCE_SITE_ID}" \
+  --data-urlencode 'persist_data[HOST_PLAN]=business' \
   "https://atomic-api.wordpress.com/api/v1.0/create-site/${WP_CLOUD_CLIENT}"
 ```
 
-The accepted response contains the new site ID and a provisioning job:
+The accepted response contains the new site ID and a clone response ticket ID:
 
 ```json
 {
@@ -27,21 +28,56 @@ The accepted response contains the new site ID and a provisioning job:
   "data": {
     "job_id": 1234,
     "atomic_site_id": 5678,
-    "domain_name": "staging.example.com"
+    "domain_name": "staging.example.com",
+    "response_ticket_id": "<response-ticket-id>"
   }
 }
 ```
 
-The expected result is a response containing the destination site ID and provisioning job ID. It means WP Cloud accepted the request, not that the clone has finished. Check the returned job, then continue after it reports success, as described in the [WP Cloud API quick start](/docs/api-automation/api-quick-start/#check-the-provisioning-job).
+### Monitor clone completion
+
+Save `response_ticket_id` from the Create Site response. The response confirms that WP Cloud accepted the request, not that the clone has finished. Use the response ticket to track clone completion; the provisioning `job_id` is not a reliable clone-completion signal.
+
+Poll the [Get Response Ticket Summary endpoint](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/get/summary). Replace `<response-ticket-id>` with the returned ticket ID:
+
+```bash
+export WP_CLOUD_RESPONSE_TICKET_ID='<response-ticket-id>'
+
+curl --fail-with-body --silent --show-error \
+  --request POST \
+  --header "Auth: ${WP_CLOUD_API_KEY}" \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data-urlencode "response-ticket-id=${WP_CLOUD_RESPONSE_TICKET_ID}" \
+  "https://atomic-api.wordpress.com/api/v1.0/response-ticket/get/summary"
+```
+
+| Summary `data.status` | Meaning and next action |
+| --- | --- |
+| `null` | The clone is queued or running. Continue polling; this value does not distinguish clone phases. |
+| `success` | The clone has completed. Continue with destination-site setup and verification. |
+| `failure` | The clone failed. Stop dependent setup and inspect the ticket details. |
+
+If the endpoint returns HTTP 202, the ticket has not received a response yet. Wait one second before querying it again. Do not start site-scoped setup, including separate Persistent Data updates, until the clone ticket reports `success`.
+
+Use summary mode for routine polling because it is lighter and faster. Use the [Get Response Ticket Details endpoint](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/get/full) only when you need progress messages to investigate a slow or failed clone. Retain the destination site ID and response ticket ID for troubleshooting.
 
 A clone copies WordPress users and application data from the source database. The `admin_user`, `admin_email`, and `admin_pass` fields in the Create Site request do not replace the copied users. Change credentials after provisioning when the destination needs different access.
 
-Persistent Data survives cloning.
+### Set Persistent Data for the destination
 
-After the provisioning job succeeds:
+A clone is a new site. It does not inherit the source site's [Persistent Data](/docs/sites/persistent-data/). Supply destination values with `persist_data` in the same Create Site request as `clone_from`, as shown above. No follow-up Persistent Data call is needed to apply those values to the cloned site.
+
+| Create Site clone request | Destination Persistent Data |
+| --- | --- |
+| `persist_data` supplied | The new values supplied in the request, even when the source has existing Persistent Data. |
+| `persist_data` omitted | `null`, even when the source has existing Persistent Data. The source values are not copied. |
+
+Set required destination site-meta values explicitly as well. Do not assume that source-specific partner metadata carries over to the new site.
+
+After the clone response ticket reports `success`:
 
 - record the destination's new Atomic Site ID and domain, and confirm that the site is available;
-- review its site meta, resource settings, access, and [Persistent Data](/docs/sites/persistent-data/);
+- review its site meta, resource settings, access, and [Persistent Data](/docs/sites/persistent-data/), and confirm that site code receives the intended values;
 - update the partner's local inventory or customer mapping to use the new Atomic Site ID; and
 - review [WordPress multisite](/docs/wordpress/multisite/) configuration when cloning a network, because cloning does not rewrite every multisite constant or database value.
 
