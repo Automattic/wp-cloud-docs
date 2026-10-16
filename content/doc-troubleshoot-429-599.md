@@ -30,7 +30,7 @@ or visitors were affected before you begin changing the site.
    zone.
 2. Request web server logs for that period and filter for status `429` and
    `599`. Authorized partners can use the [Get Web Server Logs
-   endpoint](https://wp.cloud/docs/api/#tag/logs/POST/site-logs/{site}).
+   endpoint](https://wp.cloud/docs/api/#tag/logs/POST/logs/site/{site}).
 3. Compare the log results with [Metrics](/docs/monitoring-logs/metrics/)
    for the same period. Current operational charts are also available in the
    [WP Cloud host portal](https://hosts.automattic.com/wpcloud). For API access,
@@ -49,6 +49,8 @@ and Metrics records before treating it as a WP Cloud rate limit. Some responses
 handled entirely at the edge do not appear in origin web server logs, so an
 absent origin-log entry does not by itself prove that another provider returned
 the response.
+
+For recent requests handled at WP Cloud's edge, check [Edge Logs](/docs/monitoring-logs/logs/web-server-logs/#retrieve-edge-request-logs) for `http_status`, `is_rate_limited`, and `rate_limit_reason`. Edge Logs have shorter retention and smaller query limits than origin logs; use the limits in the linked guide when choosing a time range.
 
 Log responses can contain IP addresses, request URLs, referrers, and user-agent
 values. Redact them before sharing logs with anyone who does not need access to
