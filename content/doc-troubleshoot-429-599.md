@@ -97,6 +97,8 @@ specific plugin or request. If a connection does not become available within
 the platform's waiting period, WP Cloud records a 599 and returns a 429 page to
 the visitor.
 
+An internally recorded 599 triggers temporary [Automatic Defensive Mode](/docs/security/traffic-protection/defensive-mode/#automatic-defensive-mode) to protect the site's resources. Requests that receive a browser challenge must pass it before continuing. Traffic classifications can also trigger challenges without a 599 or an active Defensive Mode setting. For unexpected challenges affecting real users or essential services, [report the request details to WP Cloud Support](/docs/security/traffic-protection/defensive-mode/#report-unexpected-challenges).
+
 Common contributors include:
 
 - Too many uncached requests reaching WordPress.
