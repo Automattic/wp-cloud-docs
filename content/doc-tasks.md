@@ -25,6 +25,17 @@ The [Create Task endpoint](https://wp.cloud/docs/api/#tag/tasks/POST/task-create
 
 Use `site_run_list` to target an array of up to 200 site IDs. Invalid IDs in that list fail silently and do not produce webhook events. Use `site_count_limit` with an integer or percentage to run against only part of the client account before expanding the task.
 
+### Choose the WP-CLI execution mode
+
+For `run-wp-cli-command` tasks, set `cli_mode` to select the site context:
+
+| Mode | When to use it |
+| --- | --- |
+| `full` | Run with the full site context when the command depends on plugins, themes, or other site-specific code. |
+| `limited` | Avoid loading site-specific code when a broken plugin, theme, or other site code prevents a core WP-CLI command from starting. |
+
+A command provided by site-specific code may be unavailable or behave differently in `limited` mode. Test that the required command works in the selected context. Limited mode changes what code is loaded; it does not make a write command read-only or provide a dry run. Keep using `site_run_list` or `site_count_limit` to control which sites receive the task.
+
 ## Create a task
 
 Search for sites containing `sample.php`:
@@ -41,7 +52,7 @@ curl --fail-with-body --silent --show-error \
   "https://atomic-api.wordpress.com/api/v1.0/task-create/${WP_CLOUD_CLIENT}/site-find-files"
 ```
 
-Run `wp db size` against a limited set of sites:
+Run `wp db size` in limited execution mode against a selected set of sites:
 
 ```bash
 curl --fail-with-body --silent --show-error \
@@ -50,6 +61,7 @@ curl --fail-with-body --silent --show-error \
   --header 'Content-Type: application/x-www-form-urlencoded' \
   --data-urlencode 'args[]=db' \
   --data-urlencode 'args[]=size' \
+  --data-urlencode 'cli_mode=limited' \
   --data-urlencode 'site_run_list[]=123456' \
   --data-urlencode 'site_run_list[]=123457' \
   "https://atomic-api.wordpress.com/api/v1.0/task-create/${WP_CLOUD_CLIENT}/run-wp-cli-command"

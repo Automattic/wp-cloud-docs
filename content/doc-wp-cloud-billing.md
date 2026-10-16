@@ -19,6 +19,8 @@ For example, a customer can move to a larger partner plan without replacing
 its Atomic Site ID. The partner updates that site's allowed resource values and
 its own billing record in place.
 
+For measured resource consumption, meter units, forecasts, and the two-hour reconciliation window, see [Usage reporting](/docs/monitoring-logs/usage-reporting/). Reporting usage does not change the partner's billing agreement or the allocated-resource billing described here.
+
 ## Keep billing data accurate
 
 Review the Partner Portal inventory regularly and make sure each site has the
