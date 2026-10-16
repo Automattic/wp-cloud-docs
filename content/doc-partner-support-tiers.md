@@ -10,7 +10,7 @@ The services available to a specific partner depend on its partnership agreement
 | --- | --- | --- |
 | Support model | Documentation and support requests for WP Cloud platform issues. | A managed relationship that may include a named contact or account manager. |
 | Onboarding | Standard onboarding resources and documentation. | Onboarding tailored to the partner's product, configuration, and workflow. |
-| Implementation | The partner's team designs, builds, and troubleshoots its integration using WP Cloud documentation and the API reference. | The WP Cloud team may provide hands-on guidance for setup, optimization, and integrations. |
+| Implementation | The partner's team designs, builds, and troubleshoots its integration using WP Cloud documentation and the API reference. | The WP Cloud team may provide hands-on guidance for WP Cloud setup, platform configuration, and integrations. |
 | Communication | Support requests submitted through the WP Cloud Partner Portal. | Communication methods, check-ins, and reviews arranged with the partner team. |
 | Platform configuration | Standard platform features and configuration. | Approved platform options and configuration based on the partnership agreement. |
 
@@ -42,14 +42,12 @@ WP Cloud Support helps both Self-Service and Managed partners with:
 - suspected WP Cloud platform incidents, bugs, and behavior that differs from
   the public documentation;
 - compliance, policy, and data-handling questions;
-- missing, incorrect, or unclear documentation; and
-- WP Cloud questions or problems that are not covered by the available
+- missing, incorrect, or unclear documentation;
+- feedback about existing WP Cloud performance and optimization features, and suggestions for new platform capabilities; and
+- WP Cloud platform questions or problems that are not covered by the available
   resources.
 
-WP Cloud supports the platform, while host partners support their hosting
-products, customers, sites, custom code, and integrations. [Get
-support](/docs/getting-started/get-support/) explains the complete scope
-and the information to include with a support request.
+WP Cloud supports the platform, while host partners support their hosting products, customers, sites, custom code, and integrations. In both tiers, your team handles general WordPress support, site-specific APM capture and analysis, performance investigations, and optimization. These are not included in WP Cloud platform support; any additional services depend on your partnership agreement. [Support scope](/docs/getting-started/get-support/#support-scope) explains these responsibilities, and [Get support](/docs/getting-started/get-support/) lists the evidence to include when reporting a suspected platform fault.
 
 ## Use Self-Service resources
 
@@ -80,7 +78,7 @@ A Managed partnership may add services such as:
 
 - a named contact or account manager;
 - onboarding tailored to the partner's hosting product;
-- hands-on guidance for setup, optimization, and integrations;
+- hands-on guidance for WP Cloud setup, platform configuration, and integrations;
 - regular check-ins or strategic reviews;
 - communication methods arranged with the partner team; and
 - approved platform options or configuration for the partner's needs.

@@ -1,6 +1,8 @@
 # Application performance monitoring
 
-WP Cloud application performance monitoring (APM) captures traces for individual requests so partner developers, support teams, and their customers can inspect where a site spends its time. Enable trace collection for a short window, reproduce the slow request, then open the temporary APM trace viewer.
+WP Cloud application performance monitoring (APM) captures traces for individual requests so your team can inspect where a site spends its time. Enable trace collection for a short window, reproduce the slow request, then open the temporary APM trace viewer.
+
+Your team is responsible for capturing and interpreting traces and implementing site-specific fixes. Access to APM does not include WP Cloud Support performing site-specific APM investigations or performance optimization. If your findings suggest a platform fault, [contact Support with the evidence collected](/docs/getting-started/get-support/#include-useful-evidence). See [Support scope](/docs/getting-started/get-support/#support-scope) for the division of responsibilities.
 
 ## Capture traces
 

@@ -12,6 +12,8 @@ WordPress sites remain fast and scale as traffic changes.
 
 A site's code and functionality can still limit performance. Slow database queries, inefficient plugin or theme code, external requests, and uncached traffic can increase response times and use available PHP or database capacity. Investigating and fixing these performance issues helps the site make the most of WP Cloud's reliability and performance capabilities.
 
+Your team is responsible for site-specific performance investigations, APM capture and analysis, profiling, and optimization. WP Cloud Support does not perform this work for partners. If your findings suggest a platform fault, [contact Support with the evidence collected](/docs/getting-started/get-support/#include-useful-evidence). See [Support scope](/docs/getting-started/get-support/#support-scope) for the division of responsibilities.
+
 Use WP Cloud Metrics, origin logs, [application performance monitoring (APM)](/docs/monitoring-logs/apm/), WordPress debugging tools, and WP-CLI profiling to investigate a performance issue. Start with two questions: how much eligible traffic is served from Page Cache or Edge Cache, and how long uncached origin requests take to finish.
 
 A site can appear fast during normal traffic while one slow uncached request leaves less capacity for traffic increases. Review performance after significant code or plugin changes and before a planned traffic event, not only after visitors report a problem.

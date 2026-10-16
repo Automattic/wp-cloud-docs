@@ -64,4 +64,6 @@ The [WP Cloud Partner Portal](/docs/getting-started/partner-portal/) provides ac
 
 WP Cloud operates the hosting platform and its managed features. Partners operate the hosting product they provide to customers. This normally includes the partner's dashboard, plans, billing, customer support, site configuration, and any software the partner or customer installs.
 
+Partners are responsible for site-specific debugging, APM capture and analysis, performance investigations, and optimization. WP Cloud provides diagnostic tools and documentation; Support does not perform this site-specific work for partners. Report suspected platform faults with the evidence collected. Feedback about WP Cloud's performance and optimization features, including suggestions for new capabilities, is also welcome. See [Support scope](/docs/getting-started/get-support/#support-scope).
+
 Partner-owned code and custom workflows can change how a site behaves. WP Cloud documentation describes the platform's standard behavior, not custom software deployed by an individual partner.
