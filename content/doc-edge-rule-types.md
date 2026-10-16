@@ -1,6 +1,6 @@
 # Edge Rule types
 
-**Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`.
+**Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`. Partners without access can contact [WP Cloud Support](/docs/getting-started/get-support/) to express interest in exploring or testing it.
 
 Each [Edge Rule](/docs/security/traffic-protection/edge-rules/) uses a catalog type identified by `rule_key`. Retrieve the [Edge Rule catalog](https://wp.cloud/docs/api/#tag/edge-rules/GET/edge-rule-catalog) for the types available to your API key. Its `input_schema`, defaults, and `constraints` are the current input contract.
 

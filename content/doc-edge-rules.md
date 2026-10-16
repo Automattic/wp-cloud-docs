@@ -1,6 +1,6 @@
 # Edge Rules
 
-**Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`.
+**Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`. Partners without access can contact [WP Cloud Support](/docs/getting-started/get-support/) to express interest in exploring or testing it.
 
 Edge Rules control HTTP traffic at WP Cloud's edge before it reaches a site's origin server. Partners can block or challenge requests, redirect or rewrite URLs, change headers, and bypass Edge Cache. The partner's API integration creates and manages rules for its sites and can expose those controls in its own panel.
 
