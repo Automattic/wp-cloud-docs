@@ -28,7 +28,11 @@ The platform's challenge system cannot be fully disabled. Ending Defensive Mode 
 
 ## Test with an accurate User-Agent
 
-Use a specific, accurate `User-Agent` for your own uptime monitor, scheduled content sync, API integration, or other automated service. This applies whether requests come from a server or your computer. Never impersonate another service by copying its `User-Agent`.
+Use a specific, accurate `User-Agent` for every service you build, including uptime monitors, scheduled content syncs, webhooks, and API integrations. This applies whether requests come from a server or your computer. Replace library defaults, such as Python or Go HTTP library User-Agents, with your service's own identifier.
+
+For example, a monitor could send `ExampleMonitor/1.0`, and a sync service could send `ExampleContentSync/2.0`. Use your own service name and version.
+
+Never impersonate a browser, Googlebot, or another service by copying its `User-Agent`.
 
 For example, a `curl` request with Googlebot's `User-Agent` from outside Google's network is spoofed crawler traffic. Expect a challenge and HTTP `403`. This test does not show how WP Cloud handles real Googlebot requests. Impersonating other well-known service providers can also trigger spoofed-traffic challenges.
 

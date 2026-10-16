@@ -1,12 +1,12 @@
-# Woo cart caching
+# WooCommerce cart caching
 
-Woo cart caching lets visitors with items in their WooCommerce cart receive eligible pages from [Edge Cache](/docs/performance/cache/edge-cache/). WooCommerce then loads the visitor's cart details dynamically.
+WooCommerce cart caching lets visitors with items in their WooCommerce cart receive eligible pages from [Edge Cache](/docs/performance/cache/edge-cache/). WooCommerce then loads the visitor's cart details dynamically.
 
 **Closed beta:** This feature is available only to enabled WP Cloud partner accounts. Partners without access can contact [WP Cloud Support](/docs/getting-started/get-support/) to express interest in exploring or testing it.
 
 ## How cart caching works
 
-Shopping cart cookies normally cause requests to bypass Edge Cache. With Woo cart caching enabled, visitors with cart cookies can receive the cached, empty-cart version of an eligible page. WooCommerce's JavaScript then updates the cart elements for that visitor. The cart may appear empty briefly while the page loads.
+Shopping cart cookies normally cause requests to bypass Edge Cache. With WooCommerce cart caching enabled, visitors with cart cookies can receive the cached, empty-cart version of an eligible page. WooCommerce's JavaScript then updates the cart elements for that visitor. The cart may appear empty briefly while the page loads.
 
 Cart details remain specific to each visitor. Requests with cart cookies can read cached pages, but their responses are never written into Edge Cache. The feature does not turn the cart or checkout into shared cached pages. Logged-in WordPress sessions still bypass Edge Cache.
 

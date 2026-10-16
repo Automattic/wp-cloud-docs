@@ -30,7 +30,7 @@ Like Page Cache, Edge Cache is designed to avoid caching requests that need a
 dynamic response. This includes logged-in WordPress sessions and dynamic
 ecommerce requests such as carts and checkouts.
 
-The closed-beta [Woo cart caching](/docs/performance/cache/woo-cart-caching/) feature lets shoppers with cart cookies receive eligible cached pages, then refreshes their cart details dynamically. Test theme and plugin compatibility before enabling it for all visitors.
+The closed-beta [WooCommerce cart caching](/docs/performance/cache/woo-cart-caching/) feature lets shoppers with cart cookies receive eligible cached pages, then refreshes their cart details dynamically. Test theme and plugin compatibility before enabling it for all visitors.
 
 Serving cached responses from the edge can:
 
