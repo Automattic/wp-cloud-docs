@@ -2,7 +2,7 @@
 
 Persistent Data stores site-specific values that a partner controls through the WP Cloud API and site code can read through `Atomic_Persistent_Data`. A partner can set Persistent Data during site creation or after the site has been provisioned, using a different endpoint for each operation. A partner's customer cannot change these values from WordPress.
 
-Persistent Data remains in place until the partner updates or removes it through the API, and it is preserved across site resets and clones. It is separate from the `_data` site-meta field used for site type, billing classification, and partner inventory metadata.
+Persistent Data remains in place until the partner updates or removes it through the API, and it is preserved when that site is reset. A clone is a new site and does not inherit the source site's Persistent Data. It is separate from the `_data` site-meta field used for site type, billing classification, and partner inventory metadata.
 
 ## Choose appropriate values
 
@@ -27,7 +27,9 @@ If a value must exist when a new site first starts, supply it through the [Creat
 --data-urlencode 'persist_data[HOST_PLAN]=business'
 ```
 
-For a complete site-creation request, use the [WP Cloud API quick start](/docs/api-automation/api-quick-start/#create-a-site). Do not call a site-scoped Persistent Data operation until provisioning has finished.
+This also works when the Create Site request includes `clone_from`. The new site receives the `persist_data` values supplied in that request; no separate follow-up call is needed to apply them. If you omit `persist_data`, the new site's Persistent Data is `null`, even when the source has existing values.
+
+For a complete site-creation request, use the [WP Cloud API quick start](/docs/api-automation/api-quick-start/#create-a-site). For a fresh site, wait for the matching `site_provisioned` webhook before starting site-scoped setup. For clones, follow the returned `response_ticket_id` in [summary mode](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/get/summary) until its status is `success`. Do not use the provisioning `job_id` as the clone-completion check or call a site-scoped Persistent Data operation while the clone is queued or running. See [Monitor clone completion](/docs/sites/cloning/#monitor-clone-completion) for the status values and troubleshooting steps.
 
 ## Set or remove data after a site is provisioned
 
@@ -43,7 +45,7 @@ curl --fail-with-body --silent --show-error \
   "https://atomic-api.wordpress.com/api/v1.0/site-persist-data/${WP_CLOUD_SITE_ID}"
 ```
 
-A successful response returns the current data and a response ticket ID. Follow the ticket with the [Get Response Ticket Summary endpoint](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/get/summary) or [Get Response Ticket Details endpoint](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/get/full) until it reaches a terminal state. The returned `job_id` field is deprecated and is not a reliable success signal.
+A successful response returns the current data and a response ticket ID. Poll the [Get Response Ticket Summary endpoint](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/get/summary) until the ticket reaches a terminal state. Use the [Get Response Ticket Details endpoint](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/get/full) when you need messages for troubleshooting. Summary mode is lighter and faster for routine polling. The returned `job_id` field is deprecated and is not a reliable success signal.
 
 If the endpoint returns HTTP 429, wait for the number of seconds in the `Retry-After` header before trying again. That response means WP Cloud could not acquire the site's data lock.
 
