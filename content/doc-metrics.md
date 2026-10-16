@@ -140,6 +140,17 @@ PHP metrics include:
 
 PHP dimensions are `http_verb`, `http_host`, `datacenter`, `atomic_site_id`, and `burst_status`. `burst_status` reports `BURST`, `LIMITED`, or `-`.
 
+### Read PHP worker use and backlog
+
+Compare these values over the same incident window:
+
+- **Worker use:** Compare `php_workers_average` and `php_workers_max` with the site's configured `default_php_conns` and available burst capacity.
+- **Backlog wait:** Inspect `php_backlog_time`, when present, in [web server logs](/docs/monitoring-logs/logs/web-server-logs/) alongside total `request_time`. Requests can wait for a worker and still succeed.
+- **Resource-limited requests:** Review `php_request_limited_percentage` and the PHP `burst_status` value `LIMITED`. Correlate them with HTTP `599` records in web server logs.
+
+See [Understand PHP workers and backlog](/docs/troubleshooting/site-performance/#understand-php-workers-and-backlog) for a six-worker example and when more capacity, optimization, or both can help.
+
+
 ## Visitor metrics
 
 `uniques` reports unique visitors, and `views` reports page views. Both are aggregated from edge data as daily statistics and use `hostname` as their dimension.
