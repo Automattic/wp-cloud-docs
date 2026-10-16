@@ -6,15 +6,30 @@ WP Cloud records PHP errors for every site. Partner developers and support teams
 
 ## Retrieve error logs through the API
 
-The [Get Site PHP Error Logs endpoint](https://wp.cloud/docs/api/#tag/logs/POST/site-error-logs/{site}) accepts an Atomic Site ID or domain and a required `start` and `end` time range. Both values can be Unix timestamps or date strings accepted by PHP's `strtotime()` function. Logs are guaranteed for 28 days; an earlier start time may return incomplete data.
+The [Get Site PHP Error Logs endpoint](https://wp.cloud/docs/api/#tag/logs/POST/logs/site/{site}/error) accepts an Atomic Site ID or domain and a required `start` and `end` time range. Both values can be Unix timestamps or date strings accepted by PHP's `strtotime()` function. Logs are guaranteed for 28 days; an earlier start time may return incomplete data.
 
-The endpoint supports pagination, ascending or descending sort order, and severity filters for `User`, `Warning`, `Deprecated`, and `Fatal error`. A successful response includes each error's message, severity, file, line, timestamp, and Atomic Site ID. Error messages and file paths can expose customer or application details, so restrict access and redact them before sharing.
+Use the [Get Client PHP Error Logs endpoint](https://wp.cloud/docs/api/#tag/logs/POST/logs/client/{client}/error) to retrieve errors across the partner's WP Cloud client account. Use a client ID or client name for `{client}`. Each record includes its `atomic_site_id` so you can identify the source site. The same time range and 28-day retention apply.
+
+Both endpoints support pagination, ascending or descending `sort_order`, and `filter[severity][]` values of `User`, `Warning`, `Deprecated`, and `Fatal error`. Set `page_size` and send the returned `scroll_id` for the next page, keeping the same fixed timestamps, severity filters, page size, and sort order. Continue until `scroll_id` is `null`. The start is inclusive and the end is exclusive.
+
+A successful response includes each error's message, severity, file, line, timestamp, and Atomic Site ID. Error messages and file paths can expose customer or application details, so restrict access and redact them before sharing.
 
 Read the severity, message, file, and line together to identify the type and location of an error. No single field identifies the complete cause.
 
 When an error occurs during a slow request, compare the same time range with Metrics and reproduce the request with [application performance monitoring (APM)](/docs/monitoring-logs/apm/) enabled. The error log identifies the PHP event, while the APM trace shows the application work around the captured request.
 
 The [Insights section in the WP Cloud Partner Portal](https://hosts.automattic.com/wpcloud) can also help partner support teams inspect site behavior before retrieving a specific log range.
+
+## Summarize errors across sites
+
+Use the PHP error summary endpoints to find where errors are concentrated without retrieving all raw messages:
+
+| Scope | Endpoint | Response |
+| --- | --- | --- |
+| Client account | [Get Client PHP Error Logs Summary](https://wp.cloud/docs/api/#tag/logs/POST/logs/client/{client}/error/summary) | The top 10 sites by error count, severity breakdowns, and time buckets, plus the top 10 plugins, themes, or mu-plugins by error count. |
+| One site | [Get Site PHP Error Logs Summary](https://wp.cloud/docs/api/#tag/logs/POST/logs/site/{site}/error/summary) | Error counts and severities over time, plus the top 10 plugins, themes, or mu-plugins by error count. |
+
+Both require `start` and `end` and accept the same `filter[severity][]` values as raw PHP logs. Set `resolution` to a bucket length in seconds, at least `60`, or omit it for automatic resolution. Retrieve raw error logs for the affected site and time range when you need the messages, files, and line numbers behind a summary.
 
 ## Read the error log on the site
 
