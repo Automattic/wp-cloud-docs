@@ -125,7 +125,7 @@ The example uses only the fields needed for a working test site. The endpoint al
 - `db_charset` accepts `latin1`, `utf8`, or `utf8mb4`. The current default is `utf8mb4`.
 - `db_collate` must match the selected character set. Supported values are `latin1_swedish_ci`, `utf8_general_ci`, and `utf8mb4_general_ci`.
 - `php_version` selects an available PHP version. Use the [Get PHP Versions endpoint](https://wp.cloud/docs/api/#tag/servers/GET/get-php-versions/{client}[/verbose]) rather than keeping a version list in your integration.
-- `wordpress-version` selects the `latest`, `previous`, or `beta` managed WordPress track for a fresh site.
+- `wordpress-version` selects the `latest`, `previous`, `beta`, or `alpha` managed WordPress track for a fresh site. It is ignored when `clone_from` or `restore_from` is supplied. See [WordPress versions](/docs/wordpress/software-versions/wordpress-versions/) for prerelease timing and channel selection.
 - `space_quota` sets the storage quota with a value such as `50G`. The current default is `200G`.
 - `software[...]` installs, activates, deactivates, locks, unlocks, or removes plugins and themes. Keys use paths such as `plugins/akismet/latest` and `themes/twentytwentyfive/latest`.
 - `clone_from` creates the site from another WP Cloud site ID or domain.
