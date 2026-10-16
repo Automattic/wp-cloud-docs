@@ -1,10 +1,10 @@
-# Edge Rules
+# Edge Rules overview
 
 **Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`. Partners without access can contact [WP Cloud Support](/docs/getting-started/get-support/) to express interest in exploring or testing it.
 
 Edge Rules control HTTP traffic at WP Cloud's edge before it reaches a site's origin server. Partners can block or challenge requests, redirect or rewrite URLs, change headers, and bypass Edge Cache. The partner's API integration creates and manages rules for its sites and can expose those controls in its own panel.
 
-Use the [rule-type reference](/docs/security/traffic-protection/edge-rule-types/) to choose an action and the [conditions reference](/docs/security/traffic-protection/edge-rule-conditions/) to select matching requests. [Verify Edge Rules](/docs/security/traffic-protection/verify-edge-rules/) explains how to check deployment and request behavior.
+Use the [rule-type reference](/docs/edge/edge-rules/types/) to choose an action and the [conditions reference](/docs/edge/edge-rules/conditions/) to select matching requests. [Verify Edge Rules](/docs/edge/edge-rules/verify/) explains how to check deployment and request behavior.
 
 ## Discover available rule types
 
@@ -94,7 +94,7 @@ This example sets a response header only for `/edge-rule-check`. Check the catal
 
    Continue waiting while `data.status` is `null`. Wait for `success` before testing the change. On `failure`, stop and inspect the ticket details. HTTP `202` from the summary endpoint means no response has arrived yet. Wait one second before querying again.
 
-6. Follow [Verify Edge Rules](/docs/security/traffic-protection/verify-edge-rules/) to read the current edge state and request the matching URL. Check for `X-Edge-Rule-Check: enabled`, then disable or delete the test rule when finished.
+6. Follow [Verify Edge Rules](/docs/edge/edge-rules/verify/) to read the current edge state and request the matching URL. Check for `X-Edge-Rule-Check: enabled`, then disable or delete the test rule when finished.
 
 ## Manage rules and limits
 

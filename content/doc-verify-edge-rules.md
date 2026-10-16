@@ -2,7 +2,7 @@
 
 **Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`. Partners without access can contact [WP Cloud Support](/docs/getting-started/get-support/) to express interest in exploring or testing it.
 
-Verify both deployment and request behavior after an [Edge Rule](/docs/security/traffic-protection/edge-rules/) changes. An accepted API request confirms that the change was stored, not that the edge already applies it. Test a matching request and a legitimate request that should remain unaffected.
+Verify both deployment and request behavior after an [Edge Rule](/docs/edge/edge-rules/overview/) changes. An accepted API request confirms that the change was stored, not that the edge already applies it. Test a matching request and a legitimate request that should remain unaffected.
 
 ## Confirm deployment
 
@@ -41,7 +41,7 @@ You can construct a URL, method, User-Agent, Referer, header, or cookie to match
 
 The source IP, its country and ASN, and the TLS client's fingerprints come from the actual connection. They cannot be replaced by setting a request header. Use a matching network or TLS client, or review observed traffic when those conditions cannot be reproduced directly.
 
-With `condition_logic=all`, every condition must match your test. With `any`, one matching condition is enough. Check [field and operator meanings](/docs/security/traffic-protection/edge-rule-conditions/) before interpreting a mismatch.
+With `condition_logic=all`, every condition must match your test. With `any`, one matching condition is enough. Check [field and operator meanings](/docs/edge/edge-rules/conditions/) before interpreting a mismatch.
 
 For the response-header example in the Edge Rules guide:
 
@@ -88,4 +88,4 @@ A previously cached response can hide a header or redirect change. Test an appro
 
 For a redirect, inspect the first response before following it so the `Location` header remains visible. For a challenge, a command-line result that is not the site's page is expected. Use a browser to check completion.
 
-If a rule disrupts legitimate traffic, use the [disable or suspend controls](/docs/security/traffic-protection/edge-rules/#suspend-rules-during-an-incident), wait for reconciliation, and repeat the affected request. Preserve the rule definition, ticket ID, timestamps, and test conditions for further investigation.
+If a rule disrupts legitimate traffic, use the [disable or suspend controls](/docs/edge/edge-rules/overview/#suspend-rules-during-an-incident), wait for reconciliation, and repeat the affected request. Preserve the rule definition, ticket ID, timestamps, and test conditions for further investigation.
