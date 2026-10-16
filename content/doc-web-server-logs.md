@@ -2,7 +2,7 @@
 
 WP Cloud web server logs record requests that reach a site's origin web server. Partner developers and support teams can retrieve them through the WP Cloud API to investigate traffic, errors, and slow requests or to provide log views in a partner-owned interface.
 
-Requests served entirely by [Edge Cache](/docs/performance/cache/edge-cache/) do not reach the origin and are not fully represented in these logs. Use [Edge Logs](#retrieve-edge-request-logs) for recent individual requests handled at the edge, including cached responses. Use [Metrics](/docs/monitoring-logs/metrics/) for request counts, cache ratios, and other time-series data.
+Requests served entirely by [Edge Cache](/docs/performance/cache/edge-cache/) do not reach the origin and are not fully represented in these logs. Use [Edge request logs](/docs/monitoring-logs/logs/edge-request-logs/) for recent individual requests handled at the edge, including cached responses. Use [Metrics](/docs/monitoring-logs/metrics/) for request counts, cache ratios, and other time-series data.
 
 ## Retrieve logs through the API
 
@@ -15,9 +15,31 @@ Log endpoints use `POST`. Choose a site or the partner's WP Cloud client account
 
 Use an Atomic Site ID or domain for `{site}`, or a client ID or client name for `{client}`. Both endpoints require `start` and `end`, as Unix timestamps or date strings accepted by PHP's `strtotime()` function. The start is inclusive and the end is exclusive. Logs are guaranteed for 28 days; an earlier start time may return incomplete data.
 
-Both endpoints support filters for cache status (`filter[cached][]`), renderer (`filter[renderer][]`), HTTP method (`filter[request_type][]`), HTTP status (`filter[status][]`), visitor IP address (`filter[user_ip][]`), and TLS fingerprints (`filter[ja3_hash][]` and `filter[ja4_hash][]`).
+### Filter origin requests
 
-The site endpoint also supports `filter[request_url][]`. The client endpoint supports `filter[atomic_site_id][]` to select sites, plus numeric ranges for `request_time` in seconds, `body_bytes_sent`, and `status`. For example, `range[request_time][gte]=1` selects requests that took at least one second. Range operators are `gte`, `lte`, `gt`, and `lt`.
+Both endpoints support these filters:
+
+- **Cache status** (`filter[cached][]`): Select cache status values, such as `true` or `false`.
+- **Renderer** (`filter[renderer][]`): Select the component that handled the request, such as `php` or `static`.
+- **HTTP method** (`filter[request_type][]`): Select methods, such as `GET` or `POST`.
+- **HTTP status** (`filter[status][]`): Select response status codes, such as `404` or `503`.
+- **Visitor IP address** (`filter[user_ip][]`): Find requests from specific source IP addresses.
+- **TLS fingerprints** (`filter[ja3_hash][]` and `filter[ja4_hash][]`): Find requests with specific JA3 or JA4 fingerprint hashes.
+
+These filters depend on the endpoint:
+
+- **Request URL** (`filter[request_url][]`): Select request URLs. Available on the site endpoint only.
+- **Site** (`filter[atomic_site_id][]`): Select sites by Atomic Site ID. Available on the client endpoint only.
+
+The client endpoint also supports numeric ranges:
+
+- **Request time** (`range[request_time][<operator>]`): Filter by request duration in seconds.
+- **Response size** (`range[body_bytes_sent][<operator>]`): Filter by response size in bytes.
+- **HTTP status** (`range[status][<operator>]`): Filter by a range of response status codes.
+
+Replace `<operator>` with `gte` (greater than or equal to), `lte` (less than or equal to), `gt` (greater than), or `lt` (less than). For example, `range[request_time][gte]=1` selects requests that took at least one second.
+
+### Page through origin logs
 
 For raw logs, set `page_size` and `sort_order` (`asc` or `desc`). To retrieve another page, send the returned `scroll_id` with the same fixed timestamps, filters, ranges, page size, and sort order. Continue until `scroll_id` is `null`. Avoid relative time values that shift the window between requests.
 
@@ -38,29 +60,7 @@ The site endpoint chooses a resolution automatically when omitted. Summary modes
 
 ## Retrieve Edge request logs
 
-The [Get Site Edge Logs endpoint](https://wp.cloud/docs/api/#tag/logs/POST/logs/site/{site}/edge) returns individual requests handled by WP Cloud's edge network. Records include HTTP status, visitor IP address, URL, user agent, country, Edge Cache status, rate-limit details, and Defensive Mode challenge details. These logs can show requests that never reach the origin.
-
-Each query covers one domain. It defaults to the site's primary domain. To query another mapped domain, pass it in the `domain` request parameter. Using that domain as `{site}` in the URL only identifies the site; it does not change which domain is queried.
-
-Edge Logs retain the past 24 hours. Each request requires `start` and `end` within that period and can cover at most one hour. The start is inclusive and the end is exclusive. A response contains at most 5,000 records, with no pagination, cursor, or offset. `data.result_count` is the returned count, not the total matching count. A response at the cap may omit matching records. Shorter windows and filters reduce the matches but do not guarantee a complete export. For adjacent windows, reuse the previous end as the next start.
-
-Edge filters are `filter[remote_addr][]`, `filter[ja3_hash][]`, `filter[request_method][]`, `filter[http_status][]`, `filter[http_user_agent][]` (exact match), and `filter[asn][]`. These names differ from origin filters: use `http_status` instead of `status`, and `remote_addr` instead of `user_ip`. Sort with `sort_field` (default `dt`) and `sort_order` (default `asc`).
-
-For example, retrieve the past 10 minutes of HTTP 429 responses at the edge. Set `WP_CLOUD_API_KEY` to an authorized API key and `WP_CLOUD_SITE_ID` to the Atomic Site ID before running this command:
-
-```bash
-LOG_END=$(date +%s)
-LOG_START=$((LOG_END - 600))
-
-curl --request POST \
-  "https://atomic-api.wordpress.com/api/v1.0/logs/site/${WP_CLOUD_SITE_ID}/edge" \
-  --header "Auth: ${WP_CLOUD_API_KEY}" \
-  --data-urlencode "start=${LOG_START}" \
-  --data-urlencode "end=${LOG_END}" \
-  --data-urlencode 'filter[http_status][]=429'
-```
-
-The example queries the primary domain. Add `--data-urlencode 'domain=example.com'` for a specific mapped domain. Compare the timestamp, URL, and response fields with origin logs and Metrics when investigating a request.
+For individual requests handled at the edge, including cached responses and challenges, use [Edge request logs](/docs/monitoring-logs/logs/edge-request-logs/). That guide covers the endpoint, query limits, filters, and an example request.
 
 ## Interpret Googlebot HTTP 408 responses
 
