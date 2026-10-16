@@ -135,11 +135,19 @@ For 599s, review `php_cpu_time`, `php_workers_average`, `php_workers_max`,
 response time for the same period. These measurements help distinguish a short
 traffic spike from PHP work that remains slow throughout the incident.
 
-Use `burst_status=LIMITED` in PHP metrics to inspect resource-limited requests.
-Compare worker use with the site's configured connections and available burst
-capacity. A worker can stay occupied while waiting for a database query or
-external response, so worker exhaustion does not require CPU use to reach its
-limit.
+Compare `php_workers_max` with the site's configured connections and available
+burst capacity. If peak use regularly reaches the allocation and extra burst capacity cannot
+meet demand, the site has a higher risk of backlog delays and requests ending
+in `599`.
+
+The PHP `burst_status` value `LIMITED` and `php_request_limited_percentage` do
+not by themselves establish that a request ended in a `599`. A request marked
+`LIMITED` can wait in the backlog, receive a worker, and complete successfully.
+Use recorded HTTP `599` statuses in logs or Metrics to confirm actual
+resource-limit failures.
+
+A worker can stay occupied while waiting for a database query or external
+response, so worker exhaustion does not require CPU use to reach its limit.
 
 ## Reduce resource use and request load
 

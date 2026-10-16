@@ -133,9 +133,9 @@ PHP metrics include:
 | `php_requests_persec` | PHP requests per second. |
 | `php_workers_average` | Average PHP workers in use. |
 | `php_workers_min` | Minimum PHP workers in use. |
-| `php_workers_max` | Maximum PHP workers in use. |
+| `php_workers_max` | Peak number of PHP workers observed in use, rather than the configured worker allocation. |
 | `php_request_burst_percentage` | Percentage of requests in burst mode. |
-| `php_request_limited_percentage` | Percentage of requests limited from burst mode. |
+| `php_request_limited_percentage` | Percentage of PHP requests classified as `LIMITED`. These can include requests that wait and then complete successfully. |
 | `php_request_normal_percentage` | Percentage of requests not in burst mode. |
 
 PHP dimensions are `http_verb`, `http_host`, `datacenter`, `atomic_site_id`, and `burst_status`. `burst_status` reports `BURST`, `LIMITED`, or `-`.
@@ -146,7 +146,11 @@ Compare these values over the same incident window:
 
 - **Worker use:** Compare `php_workers_average` and `php_workers_max` with the site's configured `default_php_conns` and available burst capacity.
 - **Backlog wait:** Inspect `php_backlog_time`, when present, in [web server logs](/docs/monitoring-logs/logs/web-server-logs/) alongside total `request_time`. Requests can wait for a worker and still succeed.
-- **Resource-limited requests:** Review `php_request_limited_percentage` and the PHP `burst_status` value `LIMITED`. Correlate them with HTTP `599` records in web server logs.
+- **Capacity classification:** Review `php_request_limited_percentage` and the PHP `burst_status` value `LIMITED`. A request marked `LIMITED` can wait for a worker and still succeed. These values are not counts of failed requests or HTTP `599` responses.
+
+For example, if a site has eight configured PHP workers and `php_workers_max` regularly reaches eight, it is regularly using its normal allocation. Bursting may allow more than eight concurrent PHP requests. Depending on available burst capacity, additional requests may wait in the backlog and be classified as `LIMITED`. Repeatedly reaching available capacity increases the risk of requests exhausting the 15-second backlog wait and producing a `599`.
+
+Confirm actual resource-limit failures using recorded HTTP `599` statuses in web server logs or Metrics. A `LIMITED` classification alone does not show whether a request completed successfully or ended in a `599`.
 
 See [Understand PHP workers and backlog](/docs/troubleshooting/site-performance/#understand-php-workers-and-backlog) for a six-worker example and when more capacity, optimization, or both can help.
 

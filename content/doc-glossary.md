@@ -56,7 +56,7 @@ current limits, and complete API schemas.
 | **bulk operation** | An operation applied across several sites. The Tasks API provides supported bulk operations for sites in one client account. |
 | **burst** | A temporary increase in traffic or resource demand. WP Cloud's PHP bursting can let a site use more PHP workers when capacity is available; an ordinary traffic burst does not necessarily mean that PHP burst mode was used. |
 | **`burst_php_conns`** | Site meta that enables or disables PHP worker bursting beyond `default_php_conns` when server-pool capacity is available. Enabling it does not reserve a fixed number of extra workers. |
-| **`burst_status`** | A PHP Metrics dimension that reports whether requests used burst capacity (`BURST`), were limited from burst capacity (`LIMITED`), or were handled without burst mode (`-`). Some request-level diagnostic surfaces expose the more specific `LIMIT-CONFIG`, `LIMIT-RESERVED`, or `LIMIT-LOAD` PHP burst status instead of the aggregated `LIMITED` value. |
+| **`burst_status`** | A PHP Metrics dimension that reports requests using burst capacity (`BURST`), subject to PHP capacity limits (`LIMITED`), or handled without burst mode (`-`). A request marked `LIMITED` can wait in the PHP backlog and still complete successfully; the classification does not by itself mean HTTP `599`. Some request-level diagnostic surfaces expose the more specific `LIMIT-CONFIG`, `LIMIT-RESERVED`, or `LIMIT-LOAD` PHP burst status instead of the aggregated `LIMITED` value. |
 
 ## C–D
 
