@@ -83,6 +83,10 @@ After the clone response ticket reports `success`:
 
 A high configured `space_quota` can prevent a clone even when the source currently uses much less storage. Compare the source configuration and destination capacity when a clone is rejected for space.
 
+### Review Edge Rules (closed beta)
+
+For accounts in the Edge Rules closed beta, inspect the destination's copied rules before sending traffic to it. The [Edge Rules cloning options](/docs/security/traffic-protection/edge-rules/#cloning-and-domain-changes) control copying, primary-domain retargeting, and disabling copied rules for review.
+
 ### Optionally skip the automatic URL rewrite
 
 Skipping the automatic URL rewrite is optional and uncommon. WP Cloud normally searches the cloned database and replaces the source domain with the destination domain. For a large site, `skip_db_rewrite=true` can shorten provisioning, but the copied database will still contain the source URLs.

@@ -88,3 +88,7 @@ of the submitted payload type. Do not include credentials, exploit payloads,
 or sensitive customer data. The host partner can use that evidence to
 distinguish a WAF false positive from an application error and identify which
 layer returned the response.
+
+## Edge Rules (closed beta)
+
+Enabled WP Cloud partner accounts can use [Edge Rules](/docs/security/traffic-protection/edge-rules/) to match HTTP requests at site or domain scope and apply blocks, challenges, redirects, or other catalog actions. Edge Rules is currently in closed beta. Validate the rule definition, wait for reconciliation, and verify matching and legitimate requests after changes.
