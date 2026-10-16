@@ -1,6 +1,6 @@
 # Verify Edge Rules
 
-**Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`.
+**Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`. Partners without access can contact [WP Cloud Support](/docs/getting-started/get-support/) to express interest in exploring or testing it.
 
 Verify both deployment and request behavior after an [Edge Rule](/docs/security/traffic-protection/edge-rules/) changes. An accepted API request confirms that the change was stored, not that the edge already applies it. Test a matching request and a legitimate request that should remain unaffected.
 

@@ -18,6 +18,8 @@ to serve a cached response or send the request to the origin. A cache miss goes
 to the origin so WordPress can produce the response. The edge can then store an
 eligible response for later requests.
 
+For sites in the closed beta, [Edge Cache preload](/docs/performance/cache/edge-cache-preload/) adds a secondary cache at the origin data center. WP Cloud checks it after a local edge miss and before forwarding the request to WordPress.
+
 Edge Cache uses the [Page Cache](/docs/performance/cache/page-cache/) time to
 live (TTL). Extending the Page Cache TTL also allows Edge Cache to serve a
 response for longer. Because edge locations populate independently, a newly
@@ -27,6 +29,8 @@ it returns a cache hit.
 Like Page Cache, Edge Cache is designed to avoid caching requests that need a
 dynamic response. This includes logged-in WordPress sessions and dynamic
 ecommerce requests such as carts and checkouts.
+
+The closed-beta [Woo cart caching](/docs/performance/cache/woo-cart-caching/) feature lets shoppers with cart cookies receive eligible cached pages, then refreshes their cart details dynamically. Test theme and plugin compatibility before enabling it for all visitors.
 
 Serving cached responses from the edge can:
 

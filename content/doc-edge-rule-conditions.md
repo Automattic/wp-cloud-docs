@@ -1,6 +1,6 @@
 # Edge Rule conditions
 
-**Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`.
+**Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`. Partners without access can contact [WP Cloud Support](/docs/getting-started/get-support/) to express interest in exploring or testing it.
 
 Conditions select the requests an [Edge Rule](/docs/security/traffic-protection/edge-rules/) acts on. Retrieve the [Edge Rule catalog](https://wp.cloud/docs/api/#tag/edge-rules/GET/edge-rule-catalog) and use `data.matchers` for the current fields, operators, limits, and placeholder vocabulary.
 
