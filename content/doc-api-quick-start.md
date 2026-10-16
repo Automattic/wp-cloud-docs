@@ -164,6 +164,26 @@ Read `data.status`: `null` means queued or running, `success` means the clone ha
 
 Use summary mode for normal polling. The [Get Response Ticket Details endpoint](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/get/full) includes progress messages for diagnosing a slow or failed clone. The [cloning guide](/docs/sites/cloning/#monitor-clone-completion) explains the completion checks and follow-up steps.
 
+### Monitor multiple response tickets
+
+For an integration tracking several operations, the [Get Multiple Response Ticket Statuses endpoint](https://wp.cloud/docs/api/#tag/response-tickets/POST/response-ticket/multi-status) retrieves their current statuses in one request. The API key needs the `response-ticket/multi-status` extended endpoint authorization. An HTTP `400` response can mean that this authorization is missing; check access before treating it as a malformed ticket ID.
+
+Pass each saved ticket ID as a separate `response-tickets[]` form field. Replace the two ticket placeholders with IDs returned by the operations you are monitoring:
+
+```bash
+curl --fail-with-body --silent --show-error \
+  --request POST \
+  --header "Auth: ${WP_CLOUD_API_KEY}" \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data-urlencode 'response-tickets[]=<first-response-ticket-id>' \
+  --data-urlencode 'response-tickets[]=<second-response-ticket-id>' \
+  'https://atomic-api.wordpress.com/api/v1.0/response-ticket/multi-status'
+```
+
+Read the map in `data.status` by ticket ID. Each value is `success`, `failure`, `running`, or `unknown`. Evaluate every ticket separately: HTTP success for the batch does not mean that every operation succeeded. Continue waiting for `running`; do not treat `unknown` as completion. Use the individual summary or full-detail endpoint to investigate an unresolved ticket.
+
+The batch endpoint uses `running`, while an individual summary can report `null` for queued or running work. Keep the individual summary workflow for one clone or when the key lacks batch authorization. Fresh-site provisioning should still use the matching `site_provisioned` webhook.
+
 ## Retrieve the site
 
 After the matching `site_provisioned` webhook arrives for a fresh site, or the response ticket reports `success` for a clone, request the site record from the [Get Site Details endpoint](https://wp.cloud/docs/api/#tag/sites/GET/get-site/{site}[/extra]):
