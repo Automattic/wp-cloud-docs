@@ -50,7 +50,7 @@ Text comparisons are case-insensitive. Header names are also case-insensitive. C
 | `http.query.param` | `eq`, `neq`, `in`, `contains`, `starts_with`, `ends_with`, `wildcard`, `exists` | A named, percent-decoded query parameter. Requires `key`. If repeated, the last occurrence wins. |
 | `http.path.extension` | `eq`, `neq`, `in`, `exists` | Lowercased final path extension without its dot, such as `pdf`. |
 
-Use [origin web server logs](/docs/monitoring-logs/logs/web-server-logs/) when investigating the JA3 and JA4 fields above. Condition names differ from log field names. The Edge Logs endpoint has its own filters. Do not assume that every condition field is an Edge Logs filter.
+Use [origin web server logs](/docs/monitoring-logs/logs/web-server-logs/) when investigating the JA3 and JA4 fields above. Condition names differ from log field names. The [Edge Logs endpoint](/docs/monitoring-logs/logs/edge-request-logs/#filter-edge-requests) has its own filters. Do not assume that every condition field is an Edge Logs filter.
 
 ## Operators
 

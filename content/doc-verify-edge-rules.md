@@ -61,7 +61,7 @@ The catalog's `verification` and `verification_note` identify the observation me
 | Rule | Expected observation |
 | --- | --- |
 | Security fence: block | A matching request receives the configured status code, default `403`, instead of the site's page. |
-| Security fence: challenge | A matching request receives a challenge. Command-line tools cannot complete the browser proof-of-work. Test the successful browser flow separately. |
+| Security fence: challenge | A matching request receives a challenge unless a normal [Defensive Mode crawler exception](/docs/security/traffic-protection/defensive-mode/#how-defensive-mode-works) applies. Command-line tools cannot complete the browser proof-of-work. Test the successful browser flow separately. |
 | Redirect | The configured redirect status and `Location` target. With `preserve_query=true`, the request's query string is appended. |
 | Rewrite | The origin receives the replacement path/query while the browser URL stays unchanged. Check origin logs or the rendered content. |
 | Request header | The specified header is set or removed on the origin request. A response-header check cannot verify this. |
@@ -76,7 +76,7 @@ Rule hit counts are not currently reported. Before enabling a security rule, ide
 
 Requests blocked or held at a challenge do not reach the origin at that stage. A drop in matching origin traffic can support the investigation, but missing origin records alone do not prove that the rule caused it. Traffic volume and caching can also change what reaches the origin.
 
-Use [Edge Logs](/docs/monitoring-logs/logs/web-server-logs/#retrieve-edge-request-logs) for recent requests handled at the edge, alongside origin web server logs and [Metrics](/docs/monitoring-logs/metrics/). Edge Logs have 24-hour retention, one-hour query windows, and capped results without pagination. They are request evidence, not per-rule hit counters. Keep these limits in mind when comparing samples.
+Use [Edge Logs](/docs/monitoring-logs/logs/edge-request-logs/) for recent requests handled at the edge, alongside origin web server logs and [Metrics](/docs/monitoring-logs/metrics/). Edge Logs have 24-hour retention, one-hour query windows, and capped results without pagination. They are request evidence, not per-rule hit counters. Keep these limits in mind when comparing samples.
 
 Confirm that legitimate logins, checkout flows, webhooks, and monitoring requests still work where relevant. Redact visitor addresses and sensitive request data before sharing evidence.
 

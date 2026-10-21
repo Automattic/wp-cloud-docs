@@ -24,6 +24,8 @@ Many traffic patterns and fingerprints can trigger a classification challenge. A
 
 WP Cloud allows certain recognized legitimate traffic through Defensive Mode to help keep essential ecommerce operations working. If real users or an essential service receives an unexpected challenge, follow [Report unexpected challenges](#report-unexpected-challenges).
 
+The normal Defensive Mode crawler exceptions also apply to [Edge Rules that challenge requests](/docs/edge/edge-rules/types/#security-fence). Edge Rule challenges can operate while manual and Automatic Defensive Mode are inactive.
+
 The platform's challenge system cannot be fully disabled. Ending Defensive Mode does not stop challenges triggered by traffic classification. WP Cloud Support can review false positives and assess whether an exception or another adjustment is appropriate.
 
 ## Test with an accurate User-Agent

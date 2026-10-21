@@ -214,7 +214,7 @@ which cache layer handled the request.
 ## Logging and cache lifetime
 
 Requests served by Edge Cache do not reach the origin and are not included in
-origin web server logs. Use [Edge Logs](/docs/monitoring-logs/logs/web-server-logs/#retrieve-edge-request-logs)
+origin web server logs. Use [Edge Logs](/docs/monitoring-logs/logs/edge-request-logs/)
 for recent request-level records, including cached responses. The [Time Series Metrics
 endpoint](https://wp.cloud/docs/api/#tag/metrics/POST/metrics/{type}/{key})
 includes edge request data such as `edge_cache_hit_percentage`,

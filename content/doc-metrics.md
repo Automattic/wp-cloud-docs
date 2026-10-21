@@ -6,7 +6,7 @@ The [Metrics feature announcement](https://wp.cloud/2025/05/05/introducing-wp-cl
 
 Use the [Time Series Metrics endpoint](https://wp.cloud/docs/api/#tag/metrics/POST/metrics/{type}/{key}[/summarize]) under `/metrics/`.
 
-For individual requests, use [origin web server logs](/docs/monitoring-logs/logs/web-server-logs/) or [Edge Logs](/docs/monitoring-logs/logs/web-server-logs/#retrieve-edge-request-logs). For PHP failures, use [error log summaries](/docs/monitoring-logs/logs/error-logs/#summarize-errors-across-sites) to identify affected sites, then retrieve their error messages. Metrics provides the aggregate trends around those events.
+For individual requests, use [origin web server logs](/docs/monitoring-logs/logs/web-server-logs/) or [Edge Logs](/docs/monitoring-logs/logs/edge-request-logs/). For PHP failures, use [error log summaries](/docs/monitoring-logs/logs/error-logs/#summarize-errors-across-sites) to identify affected sites, then retrieve their error messages. Metrics provides the aggregate trends around those events.
 
 Use [Usage reporting](/docs/monitoring-logs/usage-reporting/) for measured compute, storage, bandwidth, request, and email amounts, including period totals and forecasts. The Usage API defines its own meters, units, time ranges, and reconciliation window.
 

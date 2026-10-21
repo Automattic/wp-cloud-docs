@@ -113,7 +113,17 @@ Use an `atomic_edge_rule_id` or a `rule_name` when addressing a rule. Names can 
 
 The list is a cross-scope view, not a site-only collection. It can also show visible WP Cloud-owned rules, which the partner cannot modify. The `managed.*` prefix identifies a catalog type. It does not make a partner-created instance WP Cloud-owned.
 
-Default quotas are 20 rules per site and five per domain. Read `data.quota` for usage and limits. A domain-filtered listing also reports that domain's quota. A duplicate name or duplicate normalized configuration at the same target returns `409`. Exceeding quota also returns `409`. Contact [WP Cloud Support](/docs/getting-started/get-support/) to discuss limits for your account.
+Pass `include_managed=0` to exclude WP Cloud-owned rules from the list response. This filters the listing without disabling those rules. Use site endpoints to modify partner-owned rules with `site` or `domain` scope. Rules with `client` or `platform` scope cannot be modified through those endpoints.
+
+Default quotas are 20 rules per site and five per domain. Read `data.quota` for usage and limits. A domain-filtered listing also reports that domain's quota. Contact [WP Cloud Support](/docs/getting-started/get-support/) to discuss limits for your account.
+
+When the API returns `409`, use the response details to distinguish these cases:
+
+| Conflict | What to check or change |
+| --- | --- |
+| Quota exceeded | Inspect `data.scope`, `data.limit`, `data.current`, and `data.submitted`. Adjust the proposed changes before retrying. |
+| Duplicate name or normalized configuration at the same target | Inspect the rule identified by `data.existing`. A different name does not resolve a duplicate normalized configuration. |
+| Ambiguous name when retrieving a rule | The name matches more than one target. Use the numeric `atomic_edge_rule_id` or disambiguate with the scope and domain parameters. |
 
 ## Apply a batch of changes
 
