@@ -50,7 +50,7 @@ handled entirely at the edge do not appear in origin web server logs, so an
 absent origin-log entry does not by itself prove that another provider returned
 the response.
 
-For recent requests handled at WP Cloud's edge, check [Edge Logs](/docs/monitoring-logs/logs/web-server-logs/#retrieve-edge-request-logs) for `http_status`, `is_rate_limited`, and `rate_limit_reason`. Edge Logs have shorter retention and smaller query limits than origin logs; use the limits in the linked guide when choosing a time range.
+For recent requests handled at WP Cloud's edge, check [Edge Logs](/docs/monitoring-logs/logs/edge-request-logs/) for `http_status`, `is_rate_limited`, and `rate_limit_reason`. Edge Logs have shorter retention and smaller query limits than origin logs; use the limits in the linked guide when choosing a time range.
 
 Log responses can contain IP addresses, request URLs, referrers, and user-agent
 values. Redact them before sharing logs with anyone who does not need access to

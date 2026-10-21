@@ -19,7 +19,9 @@ Catalog entries also provide supported `scopes`, a `verification` method, and an
 
 ## Security fence
 
-Security fences block or challenge matching requests. `action=block` returns a `status_code` from `400` through `499`, defaulting to `403`. `action=challenge` requires browser proof-of-work before a request can proceed. Set `status_code` only for a block action.
+Security fences block or challenge matching requests. `action=block` returns a `status_code` from `400` through `499`, defaulting to `403`. Set `status_code` only for a block action.
+
+`action=challenge` uses browser proof-of-work. The normal [Defensive Mode crawler exceptions](/docs/security/traffic-protection/defensive-mode/#how-defensive-mode-works) also apply to challenge Edge Rules. Requests that receive a challenge must complete it before proceeding.
 
 At least one condition is required. `condition_logic` is `all` by default or can be `any`. Conditions can select IP addresses, networks, countries, Autonomous System Numbers (ASNs), TLS fingerprints, URLs, methods, or request headers.
 
