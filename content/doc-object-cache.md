@@ -38,14 +38,6 @@ repository.
 Themes and plugins decide which application data to cache. Memcached does not
 automatically cache every custom database query.
 
-WP Cloud also includes
-`/wordpress/mu-plugins/advanced-post-cache.php` for backward compatibility. The
-[current public Advanced Post Cache
-implementation](https://github.com/Automattic/advanced-post-cache/blob/master/advanced-post-cache.php)
-is deprecated and its cache methods are disabled because WordPress 6.1 added
-query caching to core. Legacy Advanced Post Cache snippets do not disable or
-bypass persistent Object Cache.
-
 ## Expiration and eviction
 
 Memcached uses a [Least Recently Used (LRU)
@@ -117,11 +109,8 @@ bypass it on a live site. If Object Cache appears to cause a compatibility
 problem, reproduce the issue on a staging site and isolate the theme, plugin,
 or custom code involved.
 
-Do not use the legacy `$advanced_post_cache_object->flush_cache()` snippet as
-an Object Cache diagnostic. In the current public Advanced Post Cache code,
-that method is a no-op. A full Object Cache flush is also not a long-term fix:
-it discards useful values and can increase database work until they are
-rebuilt.
+A full Object Cache flush is not a long-term fix: it discards useful values
+and can increase database work until they are rebuilt.
 
 Report a confirmed compatibility issue to the theme or plugin author. Include
 the steps that reproduce it, the affected cache keys or groups if known, and
