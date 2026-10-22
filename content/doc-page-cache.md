@@ -170,31 +170,6 @@ Replace the example paths with exact paths from the site. After deploying the
 change, clear any existing Page Cache and Edge Cache entries for those URLs,
 then verify the result while logged out.
 
-### Exclude custom post types from Advanced Post Cache
-
-The `advanced_post_cache_skip_for_post_type` filter applies to Advanced Post
-Cache, which caches post-query results. It does not disable all Object Cache
-storage. Use it only when a custom post type conflicts with cached post
-queries:
-
-```php
-add_filter( 'advanced_post_cache_skip_for_post_type', 'site_skip_post_types', 10, 2 );
-
-function site_skip_post_types( $skip, $post_type ) {
-    $excluded = array( 'posttype1', 'posttype2' );
-
-    if ( in_array( $post_type, $excluded, true ) ) {
-        return true;
-    }
-
-    return $skip;
-}
-```
-
-Use `wp post-type list` to find registered post-type names. Replace the example
-names, test the behavior on a staging site, and remove the bypass if it does not
-solve the specific conflict.
-
 ## Troubleshoot Page Cache
 
 If a logged-out request does not produce a Page Cache hit, use [Troubleshoot
