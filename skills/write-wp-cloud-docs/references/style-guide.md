@@ -36,6 +36,8 @@ Reader benefit and technical accuracy take priority over mechanical rules. The s
 
 Category and topic hubs contain one short orientation paragraph. Their child lists come from navigation metadata, not authored Markdown.
 
+When choosing new detail, ask whether the reader would get something wrong, get stuck, or be surprised without it. Keep uncertain details for maintainer review, with questions outside article copy. This test does not justify removing useful existing technical detail without evidence or a maintainer decision.
+
 ## Accuracy and evidence
 
 - Treat commands, API examples, configuration, limits, availability, security behavior, billing, policy, and support promises as technical claims.
@@ -49,6 +51,7 @@ Category and topic hubs contain one short orientation paragraph. Their child lis
 ## Procedures and examples
 
 - State required access, identifiers, tools, starting state, customer impact, and reversibility when they matter.
+- Before adding a procedure, search the available catalog and content for that task and read likely matches. Link to its existing home. If an existing procedure differs only in one input or step, add a branch instead of repeating the steps; keep distinct workflows separate. Raise an unclear canonical home with a maintainer.
 - Put one instruction in each numbered step unless actions must occur at the same time.
 - Put a condition the reader must know before the action it governs.
 - Keep commands copyable and separate commands from output.
@@ -64,6 +67,7 @@ Category and topic hubs contain one short orientation paragraph. Their child lis
 - Link maintained content instead of duplicating its explanation.
 - Keep contextual links in Markdown and related-document recommendations in catalog metadata.
 - Verify URLs and catalog paths; never guess a slug.
+- When a path or heading is renamed or removed, check incoming links in available documents against the old path or anchor. Use existing explicit anchors or verified renderer rules; do not guess anchor IDs. Report affected documents outside the requested edit instead of silently expanding scope. If source documents or anchor rules are unavailable, state what could not be checked; do not require live-site access.
 
 ## Search and retrieval
 

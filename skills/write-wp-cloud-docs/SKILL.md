@@ -48,6 +48,7 @@ Infer the mode from the request. Ask only when the choice changes the target doc
 ## Write from evidence
 
 - For an edit, start from the complete canonical Markdown article.
+- Before applying a supplied draft, reread the current article and confirm that the target sections still exist. Preserve intervening edits and check new or changed claims against their sources, including qualifiers. Review carried-over text only as needed for the requested change or this skill's article-wide ownership corrections.
 - For a draft, use the complete source set the user assigns. If no authoritative source exists, separate verified facts from open questions.
 - For a restructure, account for every useful procedure, example, warning, caveat, and troubleshooting detail across the affected documents.
 - Preserve an existing technical claim unless current evidence or a maintainer establishes that it is wrong. Lack of fresh corroboration alone is not a removal reason.
