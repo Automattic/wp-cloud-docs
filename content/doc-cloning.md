@@ -89,6 +89,6 @@ For accounts in the Edge Rules closed beta, inspect the destination's copied rul
 
 ### Optionally skip the automatic URL rewrite
 
-Skipping the automatic URL rewrite is optional and uncommon. WP Cloud normally searches the cloned database and replaces the source domain with the destination domain. For a large site, `skip_db_rewrite=true` can shorten provisioning, but the copied database will still contain the source URLs.
+Skipping the automatic URL rewrite is optional and uncommon. WP Cloud normally searches the cloned database and replaces the source domain with the destination domain. For a large site, `skip_db_rewrite=1` can shorten provisioning, but the copied database will still contain the source URLs. The rewrite runs by default, so leave out `skip_db_rewrite` to keep it. Sending `0` has the same effect but is not needed. Any other non-empty value, including `false`, skips the rewrite.
 
 The WP Cloud host partner is responsible for performing and checking all required URL replacements when it uses this option. If the partner makes this option available to its customers, it must ensure that each end-user site's URLs are properly rewritten before the cloned site is put into use.

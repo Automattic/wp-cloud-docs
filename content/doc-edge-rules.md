@@ -2,7 +2,7 @@
 
 **Closed beta:** Edge Rules is available only to enabled WP Cloud partner accounts. This documentation is a preview. Requests from accounts that are not enabled receive HTTP `403`. Partners without access can contact [WP Cloud Support](/docs/getting-started/get-support/) to express interest in exploring or testing it.
 
-Edge Rules control HTTP traffic at WP Cloud's edge before it reaches a site's origin server. Partners can block or challenge requests, redirect or rewrite URLs, change headers, and bypass Edge Cache. The partner's API integration creates and manages rules for its sites and can expose those controls in its own panel.
+Edge Rules control HTTP traffic at WP Cloud's edge before it reaches a site's origin server. Partners can block or challenge requests, allow trusted IP addresses, redirect or rewrite URLs, change headers, bypass Edge Cache, and leave query parameters out of the cache key. The partner's API integration creates and manages rules for its sites and can expose those controls in its own panel.
 
 Use the [rule-type reference](/docs/edge/edge-rules/types/) to choose an action and the [conditions reference](/docs/edge/edge-rules/conditions/) to select matching requests. [Verify Edge Rules](/docs/edge/edge-rules/verify/) explains how to check deployment and request behavior.
 
@@ -23,7 +23,7 @@ Build partner controls from the returned catalog rather than assuming that every
 
 The domain helper path `/site-edge-rules/{site}/domains/{domain}/rules/...` fixes the scope and target domain. A conflicting scope or domain parameter is rejected. The domain must belong to the site.
 
-Requests pass through these phases in order: redirect, rewrite, security, request headers, cache, and response headers. A rule's type determines its phase. In redirect, rewrite, and security phases, the first matching rule acts and evaluation of that phase stops. Header and cache rules apply in sequence. The last applied value stands.
+Requests pass through these phases in order: redirect, rewrite, security, request headers, cache, and response headers. A rule's type determines its phase. In redirect, rewrite, and security phases, the first matching rule acts and evaluation of that phase stops. In these phases, WP Cloud-owned rules always run before partner rules, so a partner rule cannot skip a WP Cloud rule, even with `allow`. Header and cache rules apply in sequence. The last applied value stands.
 
 `rule_order` ranges from `0` through `65535`, with a default of `0`. Within the same phase and scope, lower values take precedence. They are evaluated first in first-match phases and applied last in header/cache phases. Ties are deterministic. The default list response sorts by scope, domain name, and rule name. That display order does not describe request evaluation.
 
