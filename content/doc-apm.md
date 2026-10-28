@@ -11,11 +11,11 @@ WP Cloud has two APM versions. The site's `apm_driver` site meta value selects t
 | `apm_driver` value | APM version | Status |
 | --- | --- | --- |
 | No value or `elastic` | Legacy APM | Default. Deprecated, and receives only bug fixes and security updates. |
-| `pfx` | Next Gen APM | Available for testing. |
+| `pfx` | PFX APM | Available for testing. |
 
-The Next Gen APM uses the [PFX](https://github.com/Automattic/pfx) PHP extension to collect profiling data. It records more detail than the legacy APM. Its trace viewer adds filtering, search, and grouping, and you can download traces in OTLP, PFX, and speedscope formats for analysis in other tools.
+The PFX APM uses the [PFX](https://github.com/Automattic/pfx) PHP extension to collect profiling data. It records more detail than the legacy APM. Its trace viewer adds filtering, search, and grouping, and you can download traces in OTLP, PFX, and speedscope formats for analysis in other tools.
 
-### Switch a site to the Next Gen APM
+### Switch a site to the PFX APM
 
 **Warning:** While `apm_driver` is set to `pfx`, the legacy APM does not create span files for the site. Any integration that reads legacy APM span files receives no data for that site. Check your integrations before you switch.
 
@@ -86,6 +86,6 @@ You can generate and open this URL after trace collection ends. The site must al
 
 ## Examine a trace
 
-In the legacy APM, the Traces page lists captured requests. In the Next Gen APM, the **Transactions** tab of the **Trace Explorer** lists them. Select the request that matches the reproduced URL and time, then inspect the trace to find slow application work such as WordPress hooks, database queries, or external requests.
+In the legacy APM, the Traces page lists captured requests. In the PFX APM, the **Transactions** tab of the **Trace Explorer** lists them. Select the request that matches the reproduced URL and time, then inspect the trace to find slow application work such as WordPress hooks, database queries, or external requests.
 
 Compare the trace with [Metrics](/docs/monitoring-logs/metrics/), [web server logs](/docs/monitoring-logs/logs/web-server-logs/), and [error logs](/docs/monitoring-logs/logs/error-logs/) for the same time range. APM explains one captured request; the other sources show whether the behavior is repeated or correlated with traffic and resource use.
