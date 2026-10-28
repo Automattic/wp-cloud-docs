@@ -11,9 +11,10 @@ email marketing campaigns or other bulk mail.
 
 ## Default delivery and limits
 
-The platform-provided mailer accepts up to 200 messages per site per hour.
-Messages over the limit are rejected and must be sent again later. The limit
-does not apply when a site sends through its own SMTP provider.
+The platform-provided mailer accepts up to 200 recipients per site per hour. A
+message to three recipients counts as three. Messages over the limit are
+rejected and must be sent again later. The limit does not apply when a site
+sends through its own SMTP provider.
 
 Some managed host clients use a custom relay configuration in which the local
 mail server sends to a third-party provider. That configuration requires
@@ -76,10 +77,11 @@ transactional email service. Host partners can query the [Email Block
 endpoint](https://wp.cloud/docs/api/#tag/email/GET/email-block/{client}/{action}/{type})
 for blocked domains.
 
-The `sasl_block` webhook is sent when a domain's block record changes,
-including an unblock or an extension of an existing block. Review the
-`expires` value before notifying a customer because a later event can replace
-an earlier expiration.
+WP Cloud sends the `sasl_block` webhook when it blocks a domain and when a
+block's expiration moves at least one hour later. WP Cloud does not send it
+when a block is lifted or when only the reason changes. Use the Email Block
+endpoint to confirm the current reason and expiration before notifying a
+customer.
 
 ```json
 {
@@ -100,12 +102,11 @@ customer correct missing SPF, DKIM, or DMARC records. See
 [Webhooks](/docs/api-automation/webhooks/) for signing and event
 handling.
 
-Before requesting review of a WP Cloud SASL block, collect the sender address
-and domain, the sending path, the abused form or compromised account, the
-spam that was produced, and the block reason and expiration. Record the
-plugin, theme, and WordPress updates applied; credential and two-factor
-authentication changes where applicable; malware or vulnerability findings;
-and evidence that the unwanted sending stopped.
+Many long-term blocks start when bots use a form or registration page on the
+site to send email. Every WP Cloud site includes Akismet. Keep it active and
+checking the site's forms, and protect any form that it does not check. To
+find the cause of a block and ask WP Cloud Support to lift it, see [Lift a
+block](/docs/troubleshooting/troubleshoot-email-delivery/#lift-a-block).
 
 A WP Cloud SASL block is different from a rejection by a remote SMTP provider
 or mailbox service and from a sender-reputation problem. Check which service
@@ -119,8 +120,8 @@ authentication, reporting, and delivery controls.
 
 An external provider is a better fit when a site:
 
-- needs more than four sender addresses;
-- needs more than 200 transactional messages per hour;
+- sends from more than four addresses outside the site's domain;
+- sends to more than 200 recipients per hour;
 - sends automated transactional sequences through tools such as AutomateWoo;
 - sends bulk or marketing email rather than standard transactional messages;
 - needs more than 500 messages per day, delivery monitoring, analytics, or

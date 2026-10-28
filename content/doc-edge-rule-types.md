@@ -9,11 +9,13 @@ The examples below are rule bodies, not complete HTTP requests. Send them as for
 | Type | `rule_key` | Phase | Catalog risk |
 | --- | --- | --- | --- |
 | Security fence | `managed.security_fence` | Security | High |
+| IP allowlist | `managed.ip_allowlist` | Security | High |
 | Redirect | `managed.redirect` | Redirect | Medium |
 | Rewrite | `managed.rewrite` | Rewrite | Medium |
 | Request header | `managed.request_header` | Request headers | Low |
 | Response header | `managed.response_header` | Response headers | Low |
 | Cache bypass | `managed.cache_bypass` | Cache | Medium |
+| Ignore query args in cache | `managed.cache_ignore_args` | Cache | Medium |
 
 Catalog entries also provide supported `scopes`, a `verification` method, and any `verification_note`. Use the [conditions reference](/docs/edge/edge-rules/conditions/) for shared matching fields and operators.
 
@@ -60,6 +62,33 @@ This example blocks `/wp-login.php` requests from outside `US` and `CA`. Those c
       "conditions": [
         {"field": "http.path", "op": "starts_with", "value": "/wp-login.php"},
         {"field": "geo.country", "op": "in", "values": ["US", "CA"], "negate": true}
+      ]
+    }
+  }
+}
+```
+
+## IP allowlist
+
+IP allowlist rules let trusted IP addresses skip later partner security rules. `action=skip_challenge` stops challenges for matching requests, but block rules still apply. `action=allow` ends security evaluation, so later partner block and challenge rules do not run.
+
+Supply `ips` as a list of up to 100 IP addresses or CIDR ranges. IPv4 ranges must be `/24` or narrower, and IPv6 ranges must be `/48` or narrower. A bare address is stored as `/32` or `/128`. Conditions are optional. When supplied, they narrow the match and combine with the IP match using AND.
+
+WP Cloud-owned rules always run before partner rules, so an allowlist cannot skip them. The catalog marks this type's effect as not measurable from a response.
+
+This example lets an office address and a monitoring range skip all later partner security rules for REST API requests:
+
+```json
+{
+  "rule_name": "allow-office-rest-api",
+  "rule_key": "managed.ip_allowlist",
+  "rule_definition": {
+    "version": 1,
+    "input": {
+      "action": "allow",
+      "ips": ["203.0.113.10", "198.51.100.0/24"],
+      "conditions": [
+        {"field": "http.path", "op": "starts_with", "value": "/wp-json/"}
       ]
     }
   }
@@ -182,6 +211,35 @@ This example bypasses Edge Cache for account-area paths:
     "input": {
       "conditions": [
         {"field": "http.path", "op": "starts_with", "value": "/my-account"}
+      ]
+    }
+  }
+}
+```
+
+## Ignore query args in cache
+
+These rules leave named query parameters out of the [Edge Cache](/docs/performance/cache/edge-cache/) key for matching requests, so pages that differ only in those parameters share one cached copy. The origin still receives the full query string.
+
+Supply `args` as a list of one to 50 parameter names. Names are matched exactly as written: case-sensitive and not percent-decoded. `ignore=value` drops only the value, so pages with and without the parameter are still cached separately. `ignore=arg` drops the whole parameter, so the page without it shares the copy too.
+
+At least one condition is required. Use `http.path` `starts_with` `/` to match the whole site.
+
+Ignore a parameter only when the page does not depend on it. The first value cached is served for every other value until the copy expires. Tracking IDs and campaign tags are suitable. Search terms, pagination, and anything the page renders are not.
+
+This example shares one cached copy across referral and campaign parameters for the whole site:
+
+```json
+{
+  "rule_name": "ignore-tracking-args",
+  "rule_key": "managed.cache_ignore_args",
+  "rule_definition": {
+    "version": 1,
+    "input": {
+      "args": ["ref", "utm_campaign"],
+      "ignore": "value",
+      "conditions": [
+        {"field": "http.path", "op": "starts_with", "value": "/"}
       ]
     }
   }
