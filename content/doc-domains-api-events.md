@@ -16,6 +16,13 @@ See the [DSAPI command
 reference](/docs/api-automation/domain-registration-api/commands/#event-commands) for the
 parameters accepted by these commands.
 
+Send event commands using the [WP Cloud form request format](/docs/api-automation/domain-registration-api/overview/#command-structure).
+JSON numbers retain their types: send `params={"limit":50}` for `Event\Enumerate`
+and `params={"event_id":42}` for `Event\Details` or `Event\Ack`. The event list is
+at `data.data.events`, the unacknowledged count at `data.data.total_count`, and a
+single event at `data.data.event` in WP Cloud's response wrapper. The field
+tables below describe the event object itself.
+
 ## Poll for events
 
 ```

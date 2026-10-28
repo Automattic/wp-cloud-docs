@@ -89,45 +89,67 @@ environment.
 
 ### Select the environment
 
-The environment is selected per request with the `live` flag, sent alongside the command:
+Send `live` as a top-level form field alongside `command` and `params`:
 
-```json
-{
-  "command": "Domain\\Check",
-  "params": {
-    "domains": [ "example.com" ]
-  },
-  "live": false
-}
+```bash
+curl --request POST \
+  'https://atomic-api.wordpress.com/api/v1.0/domain-services/<client>' \
+  --header 'Auth: <api-key>' \
+  --data-urlencode 'command=Domain\Check' \
+  --data-urlencode 'params={"domains":["example.com"]}' \
+  --data-urlencode 'live=false'
 ```
 
-- `"live": false`, or omitting the flag entirely, runs the command against **OTE**. Anything other than an explicit true value also stays on OTE, so a malformed flag fails toward the test environment.
-- `"live": true` runs the command against **LIVE**.
+Replace `<client>` with your WP Cloud client name or ID and `<api-key>` with your
+authorized WP Cloud API key. Your client needs an active reseller account in the
+selected environment.
 
-Develop and test your integration against OTE first, then switch to LIVE by sending `"live": true`.
+- `live=false`, or omitting the field, selects **OTE**. Unrecognized values also
+  select OTE.
+- `live=true` selects **LIVE**. The endpoint also accepts recognized true values
+  such as `1`.
+
+Develop and test your integration against OTE first, then select LIVE with
+`--data-urlencode 'live=true'`. A `live` key inside `params` does not select the
+environment.
 
 ## Quick start
 
 ### Command structure
 
-All commands are sent as JSON with this structure:
+WP Cloud's `/domain-services/<client>` endpoint accepts a form-encoded POST
+request. Send the command parameters in one `params` field containing a JSON
+object string. Do not send a whole JSON request body, individual parameter form
+fields, or PHP array fields such as `params[period]`.
+
+The endpoint decodes `params` and passes this command structure to DSAPI:
 
 ```json
 {
-  "command": "Domain\\Register",
+  "command": "Domain\\Check",
   "params": {
-    "domain": "example.com",
-    "period": 1
+    "domains": ["example.com"]
   },
   "client_txn_id": "your-unique-correlation-id"
 }
 ```
 
-The `client_txn_id` is a correlation ID that you provide; if you omit it, one is generated automatically. It is echoed back in the command's response and in any async events produced by the command, so you can match results to the original request.
+`command` is required and case-insensitive. `params` defaults to `{}` when
+omitted. If supplied, it must contain valid JSON with an object at the root;
+lists, scalar values and `null` at the root are rejected. Nested values keep
+their JSON types: use `1` for an integer, `true` for a boolean and `null` for a
+nullable value. A numeric string such as `"1"` remains a string.
+
+Send an optional `client_txn_id` as a separate form field to correlate responses
+and asynchronous events. If omitted or blank, the endpoint generates an ID with
+an environment prefix and a UUID. This ID does not prevent duplicate operations.
 
 ### Synchronous and asynchronous responses
 
-Most commands return status `200` with immediate results in the response body. Commands that trigger long-running registrar operations instead return status `202` (accepted) and deliver their outcome later as an event:
+Accepted asynchronous work returns HTTP `202` and delivers its outcome later as
+an event. Other completed DSAPI responses return HTTP `200`, including command
+failures. Inspect `data.success` and `data.status` in the response body to
+determine the command result:
 
 - **Async commands:** `Domain\Register`, `Domain\Transfer`, `Domain\Renew`, `Domain\Restore`, `Domain\Delete`
 - **Sync commands:** everything else (availability checks, DNS updates, contact info, event operations, etc.)
@@ -144,13 +166,36 @@ See the [Events Reference](/docs/api-automation/domain-registration-api/events/)
 
 ### Date format
 
-All dates in DSAPI are formatted as `YYYY-MM-DD HH:MM:SS` in UTC.
+Calendar dates in DSAPI are formatted as `YYYY-MM-DD HH:MM:SS` in UTC. The response
+envelope's `timestamp` is a Unix timestamp in seconds.
 
 ## Responses
 
 ### Response envelope
 
-Every response (success or failure, sync or async) carries the same envelope fields:
+WP Cloud wraps the DSAPI response in its usual `message` and `data` fields:
+
+```json
+{
+  "message": "OK",
+  "data": {
+    "status": 202,
+    "status_description": "Request has been accepted for processing",
+    "success": true,
+    "client_txn_id": "your-unique-correlation-id",
+    "server_txn_id": "server-transaction-id",
+    "timestamp": 1755084000,
+    "runtime": 0.01
+  }
+}
+```
+
+The table and DSAPI examples below describe the inner envelope. In a WP Cloud
+response, read `status` at `data.status`, `success` at `data.success`, errors at
+`data.errors` when present, and command results at `data.data`. For example,
+`Event\Enumerate` returns its events at `data.data.events` and its count at
+`data.data.total_count`. The endpoint preserves DSAPI fields without adding
+missing optional fields.
 
 | Field                | Type   | Description                                                        |
 |----------------------|--------|--------------------------------------------------------------------|
@@ -161,8 +206,8 @@ Every response (success or failure, sync or async) carries the same envelope fie
 | `server_txn_id`      | string | Server-generated transaction ID. Useful when reporting issues.     |
 | `timestamp`          | int    | Unix timestamp of when the request was processed.                  |
 | `runtime`            | float  | Server processing time in seconds.                                 |
-| `data`               | object | Command-specific result payload (present on sync successes).       |
-| `errors`             | array  | Error details (present on failures). See below.                    |
+| `data`               | object | Command-specific result payload, when present.                     |
+| `errors`             | array  | Error details, when present. See below.                             |
 
 A successful sync response looks like this:
 
@@ -191,7 +236,8 @@ A successful sync response looks like this:
 
 ### Error responses
 
-When a command fails, `success` is `false`, `status` holds an error code, and `errors` contains one or more error objects:
+When a command fails, `success` is `false` and `status` holds a DSAPI error code.
+Some failures include an `errors` array, as in this inner-envelope example:
 
 ```json
 {
@@ -213,6 +259,19 @@ When a command fails, `success` is `false`, `status` holds an error code, and `e
 
 - `description`: human-readable error message.
 - `extra`: additional structured error data, when available.
+
+Handle HTTP errors before reading the DSAPI envelope. Transport validation
+returns HTTP `400` for a missing or invalid command, invalid JSON parameters,
+or a non-string correlation ID. Client authorization or an unavailable reseller
+account returns HTTP `403`. If DSAPI throws an unexpected exception or returns
+an unusable response, the endpoint returns HTTP `502` with a generic message.
+Failures in WP Cloud's integration setup return HTTP `500`. These failures use
+WP Cloud's `message` and `data` wrapper without a DSAPI command result.
+
+DSAPI error codes such as `504`, `600` and `999` are application codes in
+`data.status`; they are not HTTP status codes. Do not automatically retry an
+operation that can change domain state after an unexpected failure: it may have
+completed before the response failed.
 
 ### Error codes
 
